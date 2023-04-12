@@ -228,6 +228,7 @@ import golden_gun_marksman from '../assets/Hunter/Solar/golden_gun_marksman.png'
 
 import gamblers_dodge_sol from '../assets/Hunter/Solar/gamblers_dodge.jpg'
 import marksman_dodge_sol from '../assets/Hunter/Solar/marksman_dodge.jpg'
+import acrobat_dodge from '../assets/Hunter/Solar/acrobat_dodge.jpg'
 
 import knife_trick from '../assets/Hunter/Solar/knife_trick.jpg'
 import lightweight_knife from '../assets/Hunter/Solar/lightweight_knife.jpg'
@@ -297,7 +298,7 @@ import burning_maul from '../assets/Titan/Solar/burning_maul.png'
 import hammer_of_sol from '../assets/Titan/Solar/hammer_of_sol.png'
 
 import rally_barricade_sol from '../assets/Titan/Solar/rally_barricade.jpg'
-import towering_barricade_sol from '../assets/Titan/Solar/throwing_hammer.jpg'
+import towering_barricade_sol from '../assets/Titan/Solar/towering_barricade.jpg'
 
 import hammer_strike from '../assets/Titan/Solar/hammer_strike.jpg'
 import throwing_hammer from '../assets/Titan/Solar/throwing_hammer.jpg'
@@ -344,7 +345,7 @@ import towering_barricade_str from '../assets/Titan/Strand/towering_barricade.pn
 import frenzied_blade from '../assets/Titan/Strand/frenzied_blade.png'
 
 import drengrs_lash from '../assets/Titan/Strand/drengrs_lash.jpg'
-import into_the_frey from '../assets/Titan/Strand/into_the_fray.jpg'
+import into_the_fray from '../assets/Titan/Strand/into_the_fray.jpg'
 
 
 
@@ -577,6 +578,7 @@ const images = {
 
     gamblers_dodge_sol,
     marksman_dodge_sol,
+    acrobat_dodge,
 
     knife_trick,
     lightweight_knife,
@@ -691,7 +693,7 @@ const images = {
     frenzied_blade,
 
     drengrs_lash,
-    into_the_frey,
+    into_the_fray,
 
 }
 

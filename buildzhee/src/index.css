@@ -22,6 +22,21 @@ code {
   width: 96px;
 }
 
+.super {
+  height: 96px;
+  width: 96px;
+}
+
+.meele {
+  height: 96px;
+  width: 96px;
+}
+
+.classabil {
+  height: 96px;
+  width: 96px;
+}
+
 /* HIDE RADIO */
 [type=radio] { 
   position: absolute;
