@@ -5,8 +5,6 @@ import data from "./data"
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 
-var numSel = 0;
-
 function initBuild(subclassChoice, classChoice) {
 
   if (subclassChoice === "random") {
@@ -70,6 +68,27 @@ function initBuild(subclassChoice, classChoice) {
   ret.fragments = initFragments(subclassChoice.name, numFrag)
 
   return ret
+}
+
+function initSelList(currBuild) {
+
+  var temp = []
+  var fragslotsTotal = currBuild.aspects[0].fragslots + currBuild.aspects[1].fragslots
+  for (let i = 0; i < fragslotsTotal; i++) {
+    temp.push(false)
+  }
+
+  return {
+    class: false,
+    subclass: false,
+    super: false,
+    melee: false,
+    grenade: false,
+    classabil: false,
+    aspects: [false, false],
+    fragments: temp
+  }
+
 }
 
 function initItem(classChoice, subclassChoice, dataSec) {
@@ -142,13 +161,14 @@ function DisplayImage(props) {
     <label>
       <input type="checkbox"
         name={props.name}
+        data-key={props.class}
         value={1}
-        onChange={(event) => {
-          if (event.target.checked) {
-            props.onCheck()
+        onChange={(e) => {
+          if (e.target.checked) {
+            props.onCheck(e)
           }
           else {
-            props.onDecheck()
+            props.onDecheck(e)
           }
         }
 
@@ -189,10 +209,10 @@ function DisplayItems(props) {
       {/* aspects */}
       <div class="row">
         <div class="column">
-          <DisplayImage onCheck={props.onCheck} onDecheck={props.onDecheck} class="aspect" name={props.build.aspects[0].name} img={props.build.aspects[0].img} display={props.build.aspects[0].display} />
+          <DisplayImage onCheck={props.onCheck} onDecheck={props.onDecheck} class="aspect0" name={props.build.aspects[0].name} img={props.build.aspects[0].img} display={props.build.aspects[0].display} />
         </div>
         <div class="column">
-          <DisplayImage onCheck={props.onCheck} onDecheck={props.onDecheck} class="aspect" name={props.build.aspects[1].name} img={props.build.aspects[1].img} display={props.build.aspects[1].display} />
+          <DisplayImage onCheck={props.onCheck} onDecheck={props.onDecheck} class="aspect1" name={props.build.aspects[1].name} img={props.build.aspects[1].img} display={props.build.aspects[1].display} />
         </div>
       </div>
       {/* fragments */}
@@ -200,13 +220,17 @@ function DisplayItems(props) {
         {props.build.fragments.map((item, index) => {
           return (
             <div class="column">
-              <DisplayImage onCheck={props.onCheck} onDecheck={props.onDecheck} class="fragment" name={item.name} img={item.img} display={item.display} />
+              <DisplayImage onCheck={props.onCheck} onDecheck={props.onDecheck} class={"fragment" + index} name={item.name} img={item.img} display={item.display} />
             </div>
           )
         })}
       </div>
     </div>
   )
+
+}
+
+function rerollSelected() {
 
 }
 
@@ -218,25 +242,80 @@ const Game = () => {
   let classChoice = location.state && location.state.class
 
   const [currBuild, setBuild] = useState(initBuild(subclassChoice, classChoice))
+  const [itemsSel, setItemsSel] = useState(initSelList(currBuild))
+
   const [rerollPoints, setRerollPoints] = useState(20)
+  const [numSel, setNumSel] = useState(0)
 
   const onCheck = e => {
-    setRerollPoints(rerollPoints - (event.target.value))
+    var usekey = e.target.dataset.key
+    console.log(usekey)
+    setNumSel(numSel + (parseInt(e.target.value)))
+    if (e.target.dataset.key.substring(0, 6) == "aspect") {
+      const newItemsSel = { ...itemsSel };
+
+      const index = e.target.dataset.key.substring(6, 7);
+
+      newItemsSel.aspects = [...itemsSel.aspects];
+      newItemsSel.aspects[index] = true;
+
+      setItemsSel(newItemsSel);
+    }
+    else if (e.target.dataset.key.substring(0, 8) == "fragment") {
+      const newItemsSel = { ...itemsSel };
+
+      const index = e.target.dataset.key.substring(8, 9);
+
+      newItemsSel.fragments = [...itemsSel.fragments];
+      newItemsSel.fragments[index] = true;
+
+      setItemsSel(newItemsSel);
+    }
+    else {
+      setItemsSel({ ...itemsSel, [e.target.dataset.key]: true })
+    }
   }
 
   const onDecheck = e => {
-    setRerollPoints(rerollPoints + (event.target.value))
+    setNumSel(numSel - (parseInt(e.target.value)))
+    if (e.target.dataset.key.substring(0, 6) == "aspect") {
+      const newItemsSel = { ...itemsSel };
+
+      const index = e.target.dataset.key.substring(6, 7);
+
+      newItemsSel.aspects = [...itemsSel.aspects];
+      newItemsSel.aspects[index] = false;
+
+      setItemsSel(newItemsSel);
+    }
+    else if (e.target.dataset.key.substring(0, 8) == "fragment") {
+      const newItemsSel = { ...itemsSel };
+
+      const index = e.target.dataset.key.substring(8, 9);
+
+      newItemsSel.fragments = [...itemsSel.fragments];
+      newItemsSel.fragments[index] = false;
+
+      setItemsSel(newItemsSel);
+    }
+    else {
+      setItemsSel({ ...itemsSel, [e.target.dataset.key]: false })
+    }
   }
   return (
     <div>
       <h1>Game Page</h1>
       <h2>Reroll Points: {rerollPoints}</h2>
+      <h3>Points to be spent: {numSel}</h3>
       <br></br>
       <DisplayItems build={currBuild} onCheck={onCheck} onDecheck={onDecheck} />
+      {console.log(itemsSel)}
 
 
 
+      {/* <button onClick={rerollSelected()}>Re-roll</button> */}
       <button><Link to="/">Home</Link></button>
+
     </div>
   );
 };
