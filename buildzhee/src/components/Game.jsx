@@ -4,7 +4,7 @@ import data from "./data"
 
 import { Link, useLocation } from "react-router-dom";
 
-let currBuild = {}
+let currBuild = {class: "", subclass: "", super: ""}
 
 function DisplayImage(props) {
   return <img class={props.class} src={props.img} alt={props.display} />
@@ -23,12 +23,7 @@ function ChooseItem(props) {
 
   var rand = Math.floor(Math.random() * temp.length)
   currBuild[props.typestr] = temp[rand].name
-  return (
-    <div>
-      <DisplayImage class={props.typestr} img={temp[rand].img} display={temp[rand].display} />
-      <p>{props.typestr.charAt(0).toUpperCase() + props.typestr.slice(1)}: {temp[rand].display}</p>
-    </div>
-  )
+  return temp[rand].name
 }
 
 //choose grenade (subclass specific, class agnostic)
@@ -63,7 +58,7 @@ function ChooseAspects(props) {
     var rand2 = Math.floor(Math.random() * temp.length)
   } while (rand1 === rand2)
 
-  currBuild["aspects"] = [temp[rand1].name, temp[rand2].name]
+  currBuild.aspects = [temp[rand1].name, temp[rand2].name]
   return (
     <div>
       <DisplayImage class="aspect" img={temp[rand1].img} display={temp[rand1].display} />
@@ -72,9 +67,50 @@ function ChooseAspects(props) {
       <p> Aspect 2: {temp[rand2].display}</p>
     </div>
   )
+}
 
+function ChooseFragments(props) {
+  let aspects = []
+  let temp = []
+  let randomNumbers = []
 
+  data.aspects.map((item, index) => {
+    if (item.name == currBuild.aspects[0] || item.name == currBuild.aspects[1]) {
+      aspects.push(item)
+    }
+  })
 
+  data.fragments.map((item, index) => {
+    if (props.subclass === item.subclass) {
+      temp.push(item)
+    }
+  })
+
+  var numFrag = aspects[0].fragslots + aspects[1].fragslots
+
+  for (var i = 0; i < numFrag; i++) {
+    var rand = Math.floor(Math.random() * temp.length)
+    if (!randomNumbers.includes(rand)) {
+      randomNumbers.push(rand)
+    }
+    else {
+      i--
+    }
+  }
+
+  switch (numFrag) {
+    case 3:
+      currBuild["fragments"] = [temp[randomNumbers[0]].name, temp[randomNumbers[1]].name, temp[randomNumbers[2]].name]
+      break;
+    case 4:
+      currBuild["fragments"] = [temp[randomNumbers[0]].name, temp[randomNumbers[1]].name, temp[randomNumbers[2]].name, temp[randomNumbers[3]].name]
+      break;
+    case 5:
+      currBuild["fragments"] = [temp[randomNumbers[0]].name, temp[randomNumbers[1]].name, temp[randomNumbers[2]].name, temp[randomNumbers[3]].name, temp[randomNumbers[4]].name]
+      break;
+  }
+
+  return ("")
 }
 
 const Game = () => {
@@ -136,7 +172,10 @@ const Game = () => {
       <ChooseGrenade subclass={currBuild.subclass} />
       <ChooseItem class={currBuild.class} subclass={currBuild.subclass} itemtype={data.classabil} typestr="classabil" />
       <ChooseAspects class={currBuild.class} subclass={currBuild.subclass} />
+      <ChooseFragments class={currBuild.class} subclass={currBuild.subclass} />
+      <br></br>
       {console.log(currBuild)}
+      {console.log(currBuild.meele)}
 
 
       <button><Link to="/">Home</Link></button>

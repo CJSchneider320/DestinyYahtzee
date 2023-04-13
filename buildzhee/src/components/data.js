@@ -171,7 +171,7 @@ const data = {
     aspects: [
         //titan
         {id: 100, name: "bastion",               display: "Bastion",               class: "titan", subclass: "void",   fragslots: 1, img: images.bastion},
-        {id: 200, name: "controlled_deomlition", display: "Controlled Demolition", class: "titan", subclass: "void",   fragslots: 2, img: images.controlled_deomlition},
+        {id: 200, name: "controlled_demolition", display: "Controlled Demolition", class: "titan", subclass: "void",   fragslots: 2, img: images.controlled_demolition},
         {id: 300, name: "offensive_bulwark",     display: "Offensive Bulwark",     class: "titan", subclass: "void",   fragslots: 2, img: images.offensive_bulwark},
         {id: 110, name: "consecration",          display: "Consecration",          class: "titan", subclass: "solar",  fragslots: 2, img: images.consecration},
         {id: 210, name: "roaring_flames",        display: "Roaring Flames",        class: "titan", subclass: "solar",  fragslots: 2, img: images.roaring_flames},
@@ -219,10 +219,97 @@ const data = {
         {id: 432, name: "winters_shroud",        display: "Winter's Shroud",       class: "hunter", subclass: "stasis", fragslots: 2, img: images.winters_shroud},
         {id: 142, name: "ensearing_slam",        display: "Ensearing Slam",        class: "hunter", subclass: "strand", fragslots: 2, img: images.ensearing_slam},
         {id: 242, name: "widows_silk",           display: "Widow's Silk",          class: "hunter", subclass: "strand", fragslots: 2, img: images.widows_silk},
-    ]
+    ],
 
-    
-    
+    //ID is chosen by subclass, number in subclass
+    fragments: [
+
+        //void
+        {id: 10, name: "echo_of_cessation",      display: "Echo of Cessation",        subclass: "void",   img: images.echo_of_cessation},
+        {id: 20, name: "echo_of_dialation",      display: "Echo of Dialation",        subclass: "void",   img: images.echo_of_dialation},
+        {id: 30, name: "echo_of_domineering",    display: "Echo of Domineering",      subclass: "void",   img: images.echo_of_domineering},
+        {id: 40, name: "echo_of_exchange",       display: "Echo of Exchange",         subclass: "void",   img: images.echo_of_exchange},
+        {id: 50, name: "echo_of_expulsion",      display: "Echo of Expulsion",        subclass: "void",   img: images.echo_of_expulsion},
+        {id: 60, name: "echo_of_harvest",        display: "Echo of Harvest",          subclass: "void",   img: images.echo_of_harvest},
+        {id: 70, name: "echo_of_instability",    display: "Echo of Instability",      subclass: "void",   img: images.echo_of_instability},
+        {id: 80, name: "echo_of_leeching",       display: "Echo of Leeching",         subclass: "void",   img: images.echo_of_leeching},
+        {id: 90, name: "echo_of_obscurity",      display: "Echo of Obscurity",        subclass: "void",   img: images.echo_of_obscurity},
+        {id: 100, name: "echo_of_persistance",    display: "Echo of Persistance",      subclass: "void",   img: images.echo_of_persistance},
+        {id: 110, name: "echo_of_provision",      display: "Echo of Provision",        subclass: "void",   img: images.echo_of_provision},
+        {id: 120, name: "echo_of_remnants",       display: "Echo of Remnants",         subclass: "void",   img: images.echo_of_remnants},
+        {id: 130, name: "echo_of_reprisal",       display: "Echo of Reprisal",         subclass: "void",   img: images.echo_of_reprisal},
+        {id: 140, name: "echo_of_starvation",     display: "Echo of Starvation",       subclass: "void",   img: images.echo_of_starvation},
+        {id: 150, name: "echo_of_undermining",    display: "Echo of Undermining",      subclass: "void",   img: images.echo_of_undermining},
+        {id: 160, name: "echo_of_vigilance",      display: "Echo of Vigilance",        subclass: "void",   img: images.echo_of_vigilance},
+
+        //solar
+        {id: 11, name: "ember_of_ashes",          display: "Ember of Ashes",          subclass: "solar",  img: images.ember_of_ashes},
+        {id: 21, name: "ember_of_benevolence",    display: "Ember of Benevolence",    subclass: "solar",  img: images.ember_of_benevolence},
+        {id: 31, name: "ember_of_beams",          display: "Ember of Beams",          subclass: "solar",  img: images.ember_of_beams},
+        {id: 41, name: "ember_of_blistering",     display: "Ember of Blistering",     subclass: "solar",  img: images.ember_of_blistering},
+        {id: 51, name: "ember_of_char",           display: "Ember of Char",           subclass: "solar",  img: images.ember_of_char},
+        {id: 61, name: "ember_of_combustion",     display: "Ember of Combustion",     subclass: "solar",  img: images.ember_of_combustion},
+        {id: 71, name: "ember_of_empyrian",       display: "Ember of Empyrian",       subclass: "solar",  img: images.ember_of_empyrian},
+        {id: 81, name: "ember_of_eruption",       display: "Ember of Eruption",       subclass: "solar",  img: images.ember_of_eruption},
+        {id: 91, name: "ember_of_mercy",          display: "Ember of Mercy",          subclass: "solar",  img: images.ember_of_mercy},
+        {id: 101, name: "ember_of_resolve",        display: "Ember of Resolve",        subclass: "solar",  img: images.ember_of_resolve},
+        {id: 111, name: "ember_of_searing",        display: "Ember of Searing",        subclass: "solar",  img: images.ember_of_searing},
+        {id: 121, name: "ember_of_singeing",       display: "Ember of Singeing",       subclass: "solar",  img: images.ember_of_singeing},
+        {id: 131, name: "ember_of_solace",         display: "Ember of Solace",         subclass: "solar",  img: images.ember_of_solace},
+        {id: 141, name: "ember_of_tempering",      display: "Ember of Tempering",      subclass: "solar",  img: images.ember_of_tempering},
+        {id: 151, name: "ember_of_torches",        display: "Ember of Torches",        subclass: "solar",  img: images.ember_of_torches},
+        {id: 161, name: "ember_of_wonder",         display: "Ember of Wonder",         subclass: "solar",  img: images.ember_of_wonder},
+
+        //arc
+        {id: 12, name: "spark_of_amplitude",      display: "Spark of Amplitude",      subclass: "arc",    img: images.spark_of_amplitude},
+        {id: 22, name: "spark_of_beacons",        display: "Spark of Beacons",        subclass: "arc",    img: images.spark_of_beacons},
+        {id: 32, name: "spark_of_brilliance",     display: "Spark of Brilliance",     subclass: "arc",    img: images.spark_of_brilliance},
+        {id: 42, name: "spark_of_discharge",      display: "Spark of Discharge",      subclass: "arc",    img: images.spark_of_discharge},
+        {id: 52, name: "spark_of_feedback",       display: "Spark of Feedback",       subclass: "arc",    img: images.spark_of_feedback},
+        {id: 62, name: "spark_of_focus",          display: "Spark of Focus",          subclass: "arc",    img: images.spark_of_focus},
+        {id: 72, name: "spark_of_frequency",      display: "Spark of Frequency",      subclass: "arc",    img: images.spark_of_frequency},
+        {id: 82, name: "spark_of_haste",          display: "Spark of Haste",          subclass: "arc",    img: images.spark_of_haste},
+        {id: 92, name: "spark_of_instinct",       display: "Spark of Instinct",       subclass: "arc",    img: images.spark_of_instinct},
+        {id: 102, name: "spark_of_ions",           display: "Spark of Ions",           subclass: "arc",    img: images.spark_of_ions},
+        {id: 112, name: "spark_of_magnitude",      display: "Spark of Magnitude",      subclass: "arc",    img: images.spark_of_magnitude},
+        {id: 122, name: "spark_of_momentum",       display: "Spark of Momentum",       subclass: "arc",    img: images.spark_of_momentum},
+        {id: 132, name: "spark_of_recharge",       display: "Spark of Recharge",       subclass: "arc",    img: images.spark_of_recharge},
+        {id: 142, name: "spark_of_resistance",     display: "Spark of Resistance",     subclass: "arc",    img: images.spark_of_},
+        {id: 152, name: "spark_of_shock",          display: "Spark of Shock",          subclass: "arc",    img: images.spark_of_shock},
+        {id: 162, name: "spark_of_volts",          display: "Spark of Volts",          subclass: "arc",    img: images.spark_of_volts},
+
+        //stasis
+        {id: 13, name: "whisper_of_bonds",        display: "Whisper of Bonds",        subclass: "stasis", img: images.whisper_of_bonds},
+        {id: 23, name: "whisper_of_chains",       display: "Whisper of Chains",       subclass: "stasis", img: images.whisper_of_chains},
+        {id: 33, name: "whisper_of_conduction",   display: "Whisper of Conduction",   subclass: "stasis", img: images.whisper_of_conduction},
+        {id: 43, name: "whisper_of_durance",      display: "Whisper of Durance",      subclass: "stasis", img: images.whisper_of_durance},
+        {id: 53, name: "whisper_of_fissures",     display: "Whisper of Fissures",     subclass: "stasis", img: images.whisper_of_fissures},
+        {id: 63, name: "whisper_of_fractures",    display: "Whisper of Fractures",    subclass: "stasis", img: images.whisper_of_fractures},
+        {id: 73, name: "whisper_of_hedrons",      display: "Whisper of Hedrons",      subclass: "stasis", img: images.whisper_of_hedrons},
+        {id: 83, name: "whisper_of_hunger",       display: "Whisper of Hunger",       subclass: "stasis", img: images.whisper_of_hunger},
+        {id: 93, name: "whisper_of_impetus",      display: "Whisper of Impetus",      subclass: "stasis", img: images.whisper_of_impetus},
+        {id: 103, name: "whisper_of_refraction",   display: "Whisper of Refraction",   subclass: "stasis", img: images.whisper_of_refraction},
+        {id: 113, name: "whisper_of_rending",      display: "Whisper of Rending",      subclass: "stasis", img: images.whisper_of_rending},
+        {id: 123, name: "whisper_of_rime",         display: "Whisper of Rime",         subclass: "stasis", img: images.whisper_of_rime},
+        {id: 133, name: "whisper_of_shards",       display: "Whisper of Shards",       subclass: "stasis", img: images.whisper_of_shards},
+        {id: 143, name: "whisper_of_torment",      display: "Whisper of Torment",      subclass: "stasis", img: images.whisper_of_torment},
+
+        //strand
+        {id: 14, name: "thread_of_ascent",        display: "Thread of Ascent",        subclass: "strand", img: images.thread_of_ascent},
+        {id: 24, name: "thread_of_binding",       display: "Thread of Binding",       subclass: "strand", img: images.thread_of_binding},
+        {id: 34, name: "thread_of_continuity",    display: "Thread of Continuity",    subclass: "strand", img: images.thread_of_continuity},
+        {id: 44, name: "thread_of_evolution",     display: "Thread of Evolution",     subclass: "strand", img: images.thread_of_evolution},
+        {id: 54, name: "thread_of_finality",      display: "Thread of Finality",      subclass: "strand", img: images.thread_of_finality},
+        {id: 64, name: "thread_of_fury",          display: "Thread of Fury",          subclass: "strand", img: images.thread_of_fury},
+        {id: 74, name: "thread_of_generation",    display: "Thread of Generation",    subclass: "strand", img: images.thread_of_generation},
+        {id: 84, name: "thread_of_isolation",     display: "Thread of Isolation",     subclass: "strand", img: images.thread_of_isolation},
+        {id: 94, name: "thread_of_mind",          display: "Thread of Mind",          subclass: "strand", img: images.thread_of_mind},
+        {id: 104, name: "thread_of_propogation",   display: "Thread of Propogation",   subclass: "strand", img: images.thread_of_propogation},
+        {id: 114, name: "thread_of_rebirth",       display: "Thread of Rebirth",       subclass: "strand", img: images.thread_of_rebirth},
+        {id: 124, name: "thread_of_transmutation", display: "Thread of Transmutation", subclass: "strand", img: images.thread_of_transmutation},
+        {id: 134, name: "thread_of_warding",       display: "Thread of Warding",       subclass: "strand", img: images.thread_of_warding},
+        {id: 144, name: "thread_of_wisdom",        display: "Thread of Wisdom",        subclass: "strand", img: images.thread_of_wisdom},
+    ]
   }
 
   export default data
