@@ -36,7 +36,6 @@ const Main = () => {
         <input type="radio"
           name="classq"
           value="random"
-          checked={classChoice === "random"}
           onChange={onOptionClassChange} />
         <img class="class" src={images.none} alt="Random" />
       </label>
@@ -44,7 +43,6 @@ const Main = () => {
         <input type="radio"
           name="classq"
           value="warlock"
-          checked={classChoice === "warlock"}
           onChange={onOptionClassChange} />
         <img class="class" src={images.warlock} alt="Warlock" />
       </label>
@@ -52,7 +50,6 @@ const Main = () => {
         <input type="radio"
           name="classq"
           value="hunter"
-          checked={classChoice === "hunter"}
           onChange={onOptionClassChange} />
         <img class="class" src={images.hunter} alt="Hunter" />
       </label>
@@ -60,7 +57,6 @@ const Main = () => {
         <input type="radio"
           name="classq"
           value="titan"
-          checked={classChoice === "titan"}
           onChange={onOptionClassChange} />
         <img class="class" src={images.titan} alt="Titan" />
       </label>
@@ -73,7 +69,6 @@ const Main = () => {
         <input type="radio"
           name="subclassq"
           value="random"
-          checked={subclassChoice === "random"}
           onChange={onOptionSubclassChange} />
         <img class="subclass" src={images.none} alt="Random" />
       </label>
@@ -81,7 +76,6 @@ const Main = () => {
         <input type="radio"
           name="subclassq"
           value="void"
-          checked={subclassChoice === "void"}
           onChange={onOptionSubclassChange} />
         <img class="subclass" src={images.grape} alt="Void" />
       </label>
@@ -89,7 +83,6 @@ const Main = () => {
         <input type="radio"
           name="subclassq"
           value="solar"
-          checked={subclassChoice === "solar"}
           onChange={onOptionSubclassChange} />
         <img class="subclass" src={images.solar} alt="Solar" />
       </label>
@@ -97,7 +90,6 @@ const Main = () => {
         <input type="radio"
           name="subclassq"
           value="arc"
-          checked={subclassChoice === "arc"}
           onChange={onOptionSubclassChange} />
         <img class="subclass" src={images.arc} alt="Arc" />
       </label>
@@ -105,7 +97,6 @@ const Main = () => {
         <input type="radio"
           name="subclassq"
           value="stasis"
-          checked={subclassChoice === "stasis"}
           onChange={onOptionSubclassChange} />
         <img class="subclass" src={images.stasis} alt="Stasis" />
       </label>
@@ -113,7 +104,6 @@ const Main = () => {
         <input type="radio"
           name="subclassq"
           value="strand"
-          checked={subclassChoice === "strand"}
           onChange={onOptionSubclassChange} />
         <img class="subclass" src={images.strand} alt="Strand" />
       </label>

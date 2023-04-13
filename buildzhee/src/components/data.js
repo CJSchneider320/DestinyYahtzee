@@ -50,7 +50,7 @@ const data = {
       {id: 142, name: "silkstrike",               display: "Silkstrike",                class: "hunter",  subclass: "strand", img: images.silkstrike},
     ],
 
-    meeles: [
+    melees: [
         //titan
         {id: 100, name: "shield_bash",               display: "Shield Bash",               class: "titan",   subclass: "void",   img: images.shield_bash},
         {id: 200, name: "shield_throw",              display: "Shield Throw",              class: "titan",   subclass: "void",   img: images.shield_throw},
