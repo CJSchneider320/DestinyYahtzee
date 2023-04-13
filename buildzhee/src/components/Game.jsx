@@ -4,6 +4,7 @@ import data from "./data"
 
 import { Link, useLocation } from "react-router-dom";
 
+let currBuild = {}
 
 function DisplayImage(props) {
   return <img class={props.class} src={props.img} alt={props.display} />
@@ -19,7 +20,9 @@ function ChooseItem(props) {
     }
   })
 
-  let rand = Math.floor(Math.random() * temp.length)
+
+  var rand = Math.floor(Math.random() * temp.length)
+  currBuild[props.typestr] = temp[rand].name
   return (
     <div>
       <DisplayImage class={props.typestr} img={temp[rand].img} display={temp[rand].display} />
@@ -38,13 +41,40 @@ function ChooseGrenade(props) {
     }
   })
 
-  let rand = Math.floor(Math.random() * temp.length)
+  var rand = Math.floor(Math.random() * temp.length)
+  currBuild["grenade"] = temp[rand].name
   return (
     <div>
       <DisplayImage class="grenade" img={temp[rand].img} display={temp[rand].display} />
       <p> Grenade: {temp[rand].display}</p>
     </div>
   )
+}
+
+function ChooseAspects(props) {
+  let temp = []
+  data.aspects.map((item, index) => {
+    if (item.subclass === props.subclass && item.class === props.class) {
+      temp.push(item)
+    }
+  })
+  var rand1 = Math.floor(Math.random() * temp.length)
+  do {
+    var rand2 = Math.floor(Math.random() * temp.length)
+  } while (rand1 === rand2)
+
+  currBuild["aspects"] = [temp[rand1].name, temp[rand2].name]
+  return (
+    <div>
+      <DisplayImage class="aspect" img={temp[rand1].img} display={temp[rand1].display} />
+      <p> Aspect 1: {temp[rand1].display}</p>
+      <DisplayImage class="aspect" img={temp[rand2].img} display={temp[rand2].display} />
+      <p> Aspect 2: {temp[rand2].display}</p>
+    </div>
+  )
+
+
+
 }
 
 const Game = () => {
@@ -76,14 +106,13 @@ const Game = () => {
     }
   }
 
-  const finSubclass = subclassChoice
-  const finClass = classChoice
-
+  currBuild.class = classChoice
+  currBuild.subclass = subclassChoice
   return (
     <div>
       <h1>Game Page</h1>
       {data.subclasses.map((item, index) => {
-        if (finSubclass === item.name) {
+        if (currBuild.subclass === item.name) {
           return (
             <div>
               <DisplayImage name={item.name} img={item.img} key={index} class="subclass" />
@@ -93,7 +122,7 @@ const Game = () => {
         }
       })}
       {data.classes.map((item, index) => {
-        if (finClass === item.name) {
+        if (currBuild.class === item.name) {
           return (
             <div>
               <DisplayImage name={item.name} img={item.img} key={index} class="class" />
@@ -102,10 +131,12 @@ const Game = () => {
           )
         }
       })}
-      <ChooseItem class={finClass} subclass={finSubclass} itemtype={data.supers} typestr="super"/>
-      <ChooseItem class={finClass} subclass={finSubclass} itemtype={data.meeles} typestr="meele"/>
-      <ChooseGrenade subclass={finSubclass}/>
-      <ChooseItem class={finClass} subclass={finSubclass} itemtype={data.classabil} typestr="classabil"/>
+      <ChooseItem class={currBuild.class} subclass={currBuild.subclass} itemtype={data.supers} typestr="super" />
+      <ChooseItem class={currBuild.class} subclass={currBuild.subclass} itemtype={data.meeles} typestr="meele" />
+      <ChooseGrenade subclass={currBuild.subclass} />
+      <ChooseItem class={currBuild.class} subclass={currBuild.subclass} itemtype={data.classabil} typestr="classabil" />
+      <ChooseAspects class={currBuild.class} subclass={currBuild.subclass} />
+      {console.log(currBuild)}
 
 
       <button><Link to="/">Home</Link></button>
