@@ -157,7 +157,7 @@ function initFragments(subclassChoice, numFrag) {
 }
 
 function DisplayImage(props) {
-  if (props.class == "class" || props.class == "subclass") {
+  if (props.class === "class" || props.class === "subclass") {
     return <img class={props.class} src={props.img} alt={props.display} />
   }
 
@@ -237,7 +237,7 @@ function DisplayItems(props) {
 function rerollItem(dclass, dsubclass, oldItem, key) {
   let temp = []
   data[key].map((item, index) => {
-    if (item.class == dclass && item.subclass == dsubclass && item != oldItem) {
+    if (item.class === dclass && item.subclass === dsubclass && item !== oldItem) {
       temp.push(item)
     }
   })
@@ -249,7 +249,7 @@ function rerollItem(dclass, dsubclass, oldItem, key) {
 function rerollGrenade(dclass, dsubclass, oldItem, key) {
   let temp = []
   data[key].map((item, index) => {
-    if (item.subclass == dsubclass && item != oldItem) {
+    if (item.subclass === dsubclass && item !== oldItem) {
       temp.push(item)
     }
   })
@@ -261,7 +261,7 @@ function rerollGrenade(dclass, dsubclass, oldItem, key) {
 function rerollAspect(dclass, dsubclass, asp1, asp2, key) {
   let temp = []
   data[key].map((item, index) => {
-    if (item.class == dclass && item.subclass == dsubclass && item != asp1 && item != asp2) {
+    if (item.class === dclass && item.subclass === dsubclass && item !== asp1 && item !== asp2) {
       temp.push(item)
     }
   })
@@ -273,7 +273,7 @@ function rerollAspect(dclass, dsubclass, asp1, asp2, key) {
 function rerollFragment(dclass, dsubclass, fraglist, key) {
   let temp = []
   data[key].map((item, index) => {
-    if (item.subclass == dsubclass && !fraglist.includes(item)) {
+    if (item.subclass === dsubclass && !fraglist.includes(item)) {
       temp.push(item)
     }
   })
@@ -298,7 +298,7 @@ const Game = () => {
   const onCheck = e => {
     var usekey = e.target.dataset.key
     setNumSel(numSel + (parseInt(e.target.value)))
-    if (e.target.dataset.key.substring(0, 6) == "aspect") {
+    if (e.target.dataset.key.substring(0, 6) === "aspect") {
       const newItemsSel = { ...itemsSel };
 
       const index = e.target.dataset.key.substring(6, 7);
@@ -308,7 +308,7 @@ const Game = () => {
 
       setItemsSel(newItemsSel);
     }
-    else if (e.target.dataset.key.substring(0, 8) == "fragment") {
+    else if (e.target.dataset.key.substring(0, 8) === "fragment") {
       const newItemsSel = { ...itemsSel };
 
       const index = e.target.dataset.key.substring(8, 9);
@@ -325,7 +325,7 @@ const Game = () => {
 
   const onDecheck = e => {
     setNumSel(numSel - (parseInt(e.target.value)))
-    if (e.target.dataset.key.substring(0, 6) == "aspect") {
+    if (e.target.dataset.key.substring(0, 6) === "aspect") {
       const newItemsSel = { ...itemsSel };
 
       const index = e.target.dataset.key.substring(6, 7);
@@ -335,7 +335,7 @@ const Game = () => {
 
       setItemsSel(newItemsSel);
     }
-    else if (e.target.dataset.key.substring(0, 8) == "fragment") {
+    else if (e.target.dataset.key.substring(0, 8) === "fragment") {
       const newItemsSel = { ...itemsSel };
 
       const index = e.target.dataset.key.substring(8, 9);
@@ -351,39 +351,51 @@ const Game = () => {
   }
 
   function rerollSelected() {
-    const entries = Object.entries(itemsSel)
     const newCurrBuild = { ...currBuild }
+    const newItemsSel = {...itemsSel}
+    const entries = Object.entries(newItemsSel)
     for (const [key, value] of entries) {
-      if (key == "aspects") {
-        if (value[0] == true) {
+      if (key === "aspects") {
+        if (value[0] === true) {
           newCurrBuild.aspects[0] = rerollAspect(currBuild.class.name, currBuild.subclass.name, currBuild.aspects[0], currBuild.aspects[1], key)
+          newItemsSel.aspects[0] = false
         }
-        if (value[1] == true) {
+        if (value[1] === true) {
           newCurrBuild.aspects[1] = rerollAspect(currBuild.class.name, currBuild.subclass.name, currBuild.aspects[0], currBuild.aspects[1], key)
+          newItemsSel.aspects[1] = false
         }
 
         if (newCurrBuild.aspects[0].fragslots + newCurrBuild.aspects[1].fragslots > newCurrBuild.fragments.length) {
-          newCurrBuild.fragments.push(rerollFragment(currBuild.class.name, currBuild.subclass.name, currBuild.fragments, "fragments"))
+          var rollNum = newCurrBuild.aspects[0].fragslots + newCurrBuild.aspects[1].fragslots - newCurrBuild.fragments.length
+          for (let i = 0; i < rollNum; i++)
+            newCurrBuild.fragments.push(rerollFragment(currBuild.class.name, currBuild.subclass.name, currBuild.fragments, "fragments"))
         }
         else if (newCurrBuild.aspects[0].fragslots + newCurrBuild.aspects[1].fragslots < newCurrBuild.fragments.length) {
-          newCurrBuild.fragments.pop()
+          var rollNum = newCurrBuild.fragments.length - (newCurrBuild.aspects[0].fragslots + newCurrBuild.aspects[1].fragslots)
+          for (let i = 0; i < rollNum; i++) {
+            newCurrBuild.fragments.pop()
+          }
         }
-      } else if (key == "fragments") {
+      } else if (key === "fragments") {
         for (let i = 0; i < value.length; i++) {
-          if (value[i] == true) {
+          if (value[i] === true) {
             newCurrBuild.fragments[i] = rerollFragment(currBuild.class.name, currBuild.subclass.name, currBuild.fragments, key)
+            newItemsSel.fragments[i] = false
           }
         }
       }
-      else if (value == true) {
-        if (key == "grenade") {
+      else if (value === true) {
+        if (key === "grenade") {
           newCurrBuild[key] = rerollGrenade(currBuild.class.name, currBuild.subclass.name, currBuild[key], key + "s")
+          newItemsSel[key] = false
         } else {
-          if (key == "classabil") {
+          if (key === "classabil") {
             newCurrBuild[key] = rerollItem(currBuild.class.name, currBuild.subclass.name, currBuild[key], key)
+            newItemsSel[key] = false
           }
           else {
             newCurrBuild[key] = rerollItem(currBuild.class.name, currBuild.subclass.name, currBuild[key], key + "s")
+            newItemsSel[key] = false
 
           }
         }
@@ -391,6 +403,7 @@ const Game = () => {
 
     }
     setBuild(newCurrBuild)
+    setItemsSel(newItemsSel)
     setRerollPoints(rerollPoints - numSel)
     setNumSel(0)
 
