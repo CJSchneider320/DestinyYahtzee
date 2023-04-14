@@ -157,6 +157,10 @@ function initFragments(subclassChoice, numFrag) {
 }
 
 function DisplayImage(props) {
+  if (props.class == "class" || props.class == "subclass") {
+    return <img class={props.class} src={props.img} alt={props.display} />
+  }
+
   return (
     <label>
       <input type="checkbox"
@@ -230,8 +234,52 @@ function DisplayItems(props) {
 
 }
 
-function rerollSelected() {
+function rerollItem(dclass, dsubclass, oldItem, key) {
+  let temp = []
+  data[key].map((item, index) => {
+    if (item.class == dclass && item.subclass == dsubclass && item != oldItem) {
+      temp.push(item)
+    }
+  })
 
+  let rand = Math.floor(Math.random() * temp.length)
+  return temp[rand]
+}
+
+function rerollGrenade(dclass, dsubclass, oldItem, key) {
+  let temp = []
+  data[key].map((item, index) => {
+    if (item.subclass == dsubclass && item != oldItem) {
+      temp.push(item)
+    }
+  })
+
+  let rand = Math.floor(Math.random() * temp.length)
+  return temp[rand]
+}
+
+function rerollAspect(dclass, dsubclass, asp1, asp2, key) {
+  let temp = []
+  data[key].map((item, index) => {
+    if (item.class == dclass && item.subclass == dsubclass && item != asp1 && item != asp2) {
+      temp.push(item)
+    }
+  })
+
+  let rand = Math.floor(Math.random() * temp.length)
+  return temp[rand]
+}
+
+function rerollFragment(dclass, dsubclass, fraglist, key) {
+  let temp = []
+  data[key].map((item, index) => {
+    if (item.subclass == dsubclass && !fraglist.includes(item)) {
+      temp.push(item)
+    }
+  })
+
+  let rand = Math.floor(Math.random() * temp.length)
+  return temp[rand]
 }
 
 const Game = () => {
@@ -249,7 +297,6 @@ const Game = () => {
 
   const onCheck = e => {
     var usekey = e.target.dataset.key
-    console.log(usekey)
     setNumSel(numSel + (parseInt(e.target.value)))
     if (e.target.dataset.key.substring(0, 6) == "aspect") {
       const newItemsSel = { ...itemsSel };
@@ -302,6 +349,53 @@ const Game = () => {
       setItemsSel({ ...itemsSel, [e.target.dataset.key]: false })
     }
   }
+
+  function rerollSelected() {
+    const entries = Object.entries(itemsSel)
+    const newCurrBuild = { ...currBuild }
+    for (const [key, value] of entries) {
+      if (key == "aspects") {
+        if (value[0] == true) {
+          newCurrBuild.aspects[0] = rerollAspect(currBuild.class.name, currBuild.subclass.name, currBuild.aspects[0], currBuild.aspects[1], key)
+        }
+        if (value[1] == true) {
+          newCurrBuild.aspects[1] = rerollAspect(currBuild.class.name, currBuild.subclass.name, currBuild.aspects[0], currBuild.aspects[1], key)
+        }
+
+        if (newCurrBuild.aspects[0].fragslots + newCurrBuild.aspects[1].fragslots > newCurrBuild.fragments.length) {
+          newCurrBuild.fragments.push(rerollFragment(currBuild.class.name, currBuild.subclass.name, currBuild.fragments, "fragments"))
+        }
+        else if (newCurrBuild.aspects[0].fragslots + newCurrBuild.aspects[1].fragslots < newCurrBuild.fragments.length) {
+          newCurrBuild.fragments.pop()
+        }
+      } else if (key == "fragments") {
+        for (let i = 0; i < value.length; i++) {
+          if (value[i] == true) {
+            newCurrBuild.fragments[i] = rerollFragment(currBuild.class.name, currBuild.subclass.name, currBuild.fragments, key)
+          }
+        }
+      }
+      else if (value == true) {
+        if (key == "grenade") {
+          newCurrBuild[key] = rerollGrenade(currBuild.class.name, currBuild.subclass.name, currBuild[key], key + "s")
+        } else {
+          if (key == "classabil") {
+            newCurrBuild[key] = rerollItem(currBuild.class.name, currBuild.subclass.name, currBuild[key], key)
+          }
+          else {
+            newCurrBuild[key] = rerollItem(currBuild.class.name, currBuild.subclass.name, currBuild[key], key + "s")
+
+          }
+        }
+      }
+
+    }
+    setBuild(newCurrBuild)
+    setRerollPoints(rerollPoints - numSel)
+    setNumSel(0)
+
+  }
+
   return (
     <div>
       <h1>Game Page</h1>
@@ -309,11 +403,9 @@ const Game = () => {
       <h3>Points to be spent: {numSel}</h3>
       <br></br>
       <DisplayItems build={currBuild} onCheck={onCheck} onDecheck={onDecheck} />
-      {console.log(itemsSel)}
 
 
-
-      {/* <button onClick={rerollSelected()}>Re-roll</button> */}
+      <button onClick={() => rerollSelected()}>Re-roll</button>
       <button><Link to="/">Home</Link></button>
 
     </div>
