@@ -1,10 +1,24 @@
+html,
 body {
   margin: 0;
+  width: 100%;
+  height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+#main-div {
+  width: 100%;
+  height: 100%;
 }
 
 code {
@@ -12,44 +26,112 @@ code {
     monospace;
 }
 
-.subclass {
+.image {
   height: 96px;
   width: 96px;
 }
 
-.class {
-  height: 96px;
-  width: 96px;
+.login-button {
+  width: 60px;
+  height: 30px;
+  margin: 10px;
 }
 
-.super {
-  height: 96px;
-  width: 96px;
+.main-class {
+  margin: 10px;
+  width: 150px;
+  height: 150px;
 }
 
-.melee {
-  height: 96px;
-  width: 96px;
+.main-subclass {
+  margin: 10px;
+  width: 150px;
+  height: 150px;
 }
 
-.classabil {
-  height: 96px;
-  width: 96px;
+.main-page {
+  padding: 50px;
+  margin: 0 auto;
+  display: grid;
+  column-gap: 10px;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
 }
 
-.grenade {
-  height: 96px;
-  width: 96px;
+.row-main {
+  width: 100%;
+  letter-spacing: -0.31em;
 }
 
-.aspect {
-  height: 96px;
-  width: 96px;
+.class-box-main,
+.subclass-box-main,
+.center-box {
+  display: inline-block;
+  vertical-align: top;
+  border: 3px solid white;
+  background-color: rgba(255, 255, 255, .2);
+
+  padding: 5px;
+  margin: 0 auto;
+  letter-spacing: normal;
 }
 
-.fragment {
-  height: 96px;
-  width: 96px;
+.class-box-main {
+  grid-row: 1;
+  grid-column: 1;
+  width: 400px;
+  margin-right: 0px;
+}
+
+.class-images {
+  width: 340px;
+  height: auto;
+  margin: 0 auto;
+  padding: 10px;
+  position: relative;
+}
+
+.subclass-box-main {
+  grid-row: 1;
+  grid-column: 3;
+  width: 400px;
+  margin-left: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.subclass-images {
+  width: 340px;
+  height: auto;
+  margin: 0 auto;
+  padding: 10px;
+  position: relative;
+}
+
+.center-box {
+  grid-row: 1;
+  grid-column: 2;
+
+  margin-top: 200px;
+  width: 400px;
+  height: 300px;
+}
+
+#class-text {
+  color: black;
+  font-size: 52px;
+  text-align: center;
+  -webkit-text-stroke: 1.5px;
+  -webkit-text-stroke-color: white;
+}
+
+#subclass-text {
+  color: black;
+  font-size: 52px;
+  text-align: center;
+  -webkit-text-stroke: 1.5px;
+  -webkit-text-stroke-color: white;
 }
 
 .column {
@@ -58,6 +140,7 @@ code {
   padding: 5px;
 }
 
+
 /* Clear floats after image containers */
 .row::after {
   content: "";
@@ -65,8 +148,21 @@ code {
   display: table;
 }
 
+[type=radio]::before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-color: #000;
+  /* replace with desired color */
+  transform: rotate(45deg);
+  /* apply rotation */
+  margin-right: 8px;
+  /* add spacing between checkbox and image */
+}
+
 /* HIDE RADIO */
-[type=radio] { 
+[type=radio] {
   position: absolute;
   opacity: 0;
   width: 0;
@@ -74,27 +170,28 @@ code {
 }
 
 /* IMAGE STYLES */
-[type=radio] + img {
+[type=radio]+img {
   cursor: pointer;
+  outline: 2px solid #fff;
 }
 
 /* CHECKED STYLES */
-[type=radio]:checked + img {
+[type=radio]:checked+img {
   outline: 2px solid #f00;
 }
 
 /* IMAGE STYLES */
-[type=checkbox] + img {
+[type=checkbox]+img {
   cursor: pointer;
 }
 
 /* CHECKED STYLES */
-[type=checkbox]:checked + img {
+[type=checkbox]:checked+img {
   outline: 2px solid #f00;
 }
 
 /* HIDE CHECKBOX */
-[type=checkbox] { 
+[type=checkbox] {
   position: absolute;
   opacity: 0;
   width: 0;

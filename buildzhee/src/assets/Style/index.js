@@ -1,11 +1,7 @@
 //image representing no selection
 import none from '../assets/Shared/none.png'
 
-import bg from '../assets/Style/background_image.jpeg'
-import armor from '../assets/Style/armor_button.png'
-import weapons from '../assets/Style/weapons_button.png'
-import login from '../assets/Style/login_button.png'
-import play from '../assets/Style/play_button.png'
+import bg from '../assets/background_image.jpeg'
 
 //subclasses
 import arc from '../assets/Shared/arc.png';
@@ -358,10 +354,6 @@ import into_the_fray from '../assets/Titan/Strand/into_the_fray.jpg'
 const images = {
     none,
     bg,
-    armor,
-    weapons,
-    login,
-    play,
 
     //subclasses
     arc,

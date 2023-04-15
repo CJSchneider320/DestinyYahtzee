@@ -157,7 +157,7 @@ function initFragments(subclassChoice, numFrag) {
 }
 
 function DisplayImage(props) {
-  if (props.class === "class" || props.class === "subclass") {
+  if (props.class === "image class" || props.class === "image subclass") {
     return <img class={props.class} src={props.img} alt={props.display} />
   }
 
@@ -166,6 +166,7 @@ function DisplayImage(props) {
       <input type="checkbox"
         name={props.name}
         data-key={props.class}
+        class="buildCheckbox"
         value={1}
         onChange={(e) => {
           if (e.target.checked) {
@@ -179,7 +180,7 @@ function DisplayImage(props) {
         }
 
       />
-      <img class={props.class} src={props.img} alt={props.display} />
+      <img class={"image " + props.class} src={props.img} alt={props.display} />
     </label>
   )
 }
@@ -189,11 +190,11 @@ function DisplayItems(props) {
     <div>
       {/* class */}
       <div class="row">
-        <DisplayImage onCheck={props.onCheck} onDecheck={props.onDecheck} class="class" name={props.build.class.name} img={props.build.class.img} display={props.build.class.display} />
+        <DisplayImage onCheck={props.onCheck} onDecheck={props.onDecheck} class="image class" name={props.build.class.name} img={props.build.class.img} display={props.build.class.display} />
       </div>
       {/* subclass */}
       <div class="row">
-        <DisplayImage onCheck={props.onCheck} onDecheck={props.onDecheck} class="subclass" name={props.build.subclass.name} img={props.build.subclass.img} display={props.build.subclass.display} />
+        <DisplayImage onCheck={props.onCheck} onDecheck={props.onDecheck} class="image subclass" name={props.build.subclass.name} img={props.build.subclass.img} display={props.build.subclass.display} />
       </div>
       {/* super, grenade, melee */}
       <div class="row">
@@ -241,6 +242,9 @@ function rerollItem(dclass, dsubclass, oldItem, key) {
       temp.push(item)
     }
   })
+  if(temp.length === 0) {
+    return oldItem
+  }
 
   let rand = Math.floor(Math.random() * temp.length)
   return temp[rand]
@@ -292,7 +296,7 @@ const Game = () => {
   const [currBuild, setBuild] = useState(initBuild(subclassChoice, classChoice))
   const [itemsSel, setItemsSel] = useState(initSelList(currBuild))
 
-  const [rerollPoints, setRerollPoints] = useState(20)
+  const [rerollPoints, setRerollPoints] = useState(5)
   const [numSel, setNumSel] = useState(0)
 
   const onCheck = e => {
@@ -351,6 +355,11 @@ const Game = () => {
   }
 
   function rerollSelected() {
+    if(rerollPoints < numSel) {
+      document.getElementById("noPoints").innerHTML = "Not enough points remaining"
+      return
+    }
+    document.getElementById("noPoints").innerHTML = ""
     const newCurrBuild = { ...currBuild }
     const newItemsSel = {...itemsSel}
     const entries = Object.entries(newItemsSel)
@@ -406,6 +415,10 @@ const Game = () => {
     setItemsSel(newItemsSel)
     setRerollPoints(rerollPoints - numSel)
     setNumSel(0)
+    var checkboxes = document.getElementsByClassName("buildCheckbox")
+    for(var i = 0; i < checkboxes.length; i++) {
+      checkboxes[i].checked = false
+    }
 
   }
 
@@ -414,6 +427,7 @@ const Game = () => {
       <h1>Game Page</h1>
       <h2>Reroll Points: {rerollPoints}</h2>
       <h3>Points to be spent: {numSel}</h3>
+      <h3 id="noPoints"></h3>
       <br></br>
       <DisplayItems build={currBuild} onCheck={onCheck} onDecheck={onDecheck} />
 
