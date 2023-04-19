@@ -2,7 +2,7 @@ import React from "react";
 import images from '../assets';
 import data from "./data"
 
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 function initBuild(subclassChoice, classChoice) {
@@ -67,6 +67,9 @@ function initBuild(subclassChoice, classChoice) {
   let numFrag = ret.aspects[0].fragslots + ret.aspects[1].fragslots
   ret.fragments = initFragments(subclassChoice.name, numFrag)
 
+  //choose weapon
+  ret.weapon = initWeapon()
+
   return ret
 }
 
@@ -86,7 +89,8 @@ function initSelList(currBuild) {
     grenade: false,
     classabil: false,
     aspects: [false, false],
-    fragments: temp
+    fragments: temp,
+    weapon: false
   }
 
 }
@@ -98,6 +102,16 @@ function initItem(classChoice, subclassChoice, dataSec) {
       possItems.push(item)
     }
   })
+  var rand = Math.floor(Math.random() * possItems.length)
+  return possItems[rand]
+}
+
+function initWeapon() {
+  let possItems = []
+  data.weapons.map((item, index) => {
+    possItems.push(item)
+  })
+
   var rand = Math.floor(Math.random() * possItems.length)
   return possItems[rand]
 }
@@ -157,12 +171,17 @@ function initFragments(subclassChoice, numFrag) {
 }
 
 function DisplayImage(props) {
-  if (props.class === "image class" || props.class === "image subclass") {
-    return <img class={props.class} src={props.img} alt={props.display} />
+  if (props.class === "class" || props.class === "subclass") {
+    return <img
+      class={props.class}
+      src={props.img}
+      alt={props.display}
+      onMouseEnter={() => displayInfo(props.display)}
+      onMouseLeave={() => removeInfo()} />
   }
 
   return (
-    <label>
+    <label class={props.class}>
       <input type="checkbox"
         name={props.name}
         data-key={props.class}
@@ -180,56 +199,40 @@ function DisplayImage(props) {
         }
 
       />
-      <img class={"image " + props.class} src={props.img} alt={props.display} />
+      <img
+        class={"image " + props.class}
+        src={props.img}
+        alt={props.display}
+        onMouseEnter={() => displayInfo(props.display)}
+        onMouseLeave={() => removeInfo()} />
     </label>
   )
 }
 
 function DisplayItems(props) {
   return (
-    <div>
+    <div id="mega-grid" class="mega-grid">
       {/* class */}
-      <div class="row">
-        <DisplayImage onCheck={props.onCheck} onDecheck={props.onDecheck} class="image class" name={props.build.class.name} img={props.build.class.img} display={props.build.class.display} />
-      </div>
+      <DisplayImage setShowInfo={props.setShowInfo} onCheck={props.onCheck} onDecheck={props.onDecheck} class="class" name={props.build.class.name} img={props.build.class.img} display={props.build.class.display} />
       {/* subclass */}
-      <div class="row">
-        <DisplayImage onCheck={props.onCheck} onDecheck={props.onDecheck} class="image subclass" name={props.build.subclass.name} img={props.build.subclass.img} display={props.build.subclass.display} />
-      </div>
+      <DisplayImage setShowInfo={props.setShowInfo} onCheck={props.onCheck} onDecheck={props.onDecheck} class="subclass" name={props.build.subclass.name} img={props.build.subclass.img} display={props.build.subclass.display} />
       {/* super, grenade, melee */}
-      <div class="row">
-        <div class="column">
-          <DisplayImage onCheck={props.onCheck} onDecheck={props.onDecheck} class="super" name={props.build.super.name} img={props.build.super.img} display={props.build.super.display} />
-        </div>
-        <div class="column">
-          <DisplayImage onCheck={props.onCheck} onDecheck={props.onDecheck} class="grenade" name={props.build.grenade.name} img={props.build.grenade.img} display={props.build.grenade.display} />
-        </div>
-        <div class="column">
-          <DisplayImage onCheck={props.onCheck} onDecheck={props.onDecheck} class="melee" name={props.build.melee.name} img={props.build.melee.img} display={props.build.melee.display} />
-        </div>
-        <div class="column">
-          <DisplayImage onCheck={props.onCheck} onDecheck={props.onDecheck} class="classabil" name={props.build.classabil.name} img={props.build.classabil.img} display={props.build.classabil.display} />
-        </div>
+      <div class="super-box">
+        <DisplayImage setShowInfo={props.setShowInfo} onCheck={props.onCheck} onDecheck={props.onDecheck} class="super" name={props.build.super.name} img={props.build.super.img} display={props.build.super.display} />
       </div>
+      <DisplayImage setShowInfo={props.setShowInfo} onCheck={props.onCheck} onDecheck={props.onDecheck} class="grenade" name={props.build.grenade.name} img={props.build.grenade.img} display={props.build.grenade.display} />
+      <DisplayImage setShowInfo={props.setShowInfo} onCheck={props.onCheck} onDecheck={props.onDecheck} class="melee" name={props.build.melee.name} img={props.build.melee.img} display={props.build.melee.display} />
+      <DisplayImage setShowInfo={props.setShowInfo} onCheck={props.onCheck} onDecheck={props.onDecheck} class="classabil" name={props.build.classabil.name} img={props.build.classabil.img} display={props.build.classabil.display} />
       {/* aspects */}
-      <div class="row">
-        <div class="column">
-          <DisplayImage onCheck={props.onCheck} onDecheck={props.onDecheck} class="aspect0" name={props.build.aspects[0].name} img={props.build.aspects[0].img} display={props.build.aspects[0].display} />
-        </div>
-        <div class="column">
-          <DisplayImage onCheck={props.onCheck} onDecheck={props.onDecheck} class="aspect1" name={props.build.aspects[1].name} img={props.build.aspects[1].img} display={props.build.aspects[1].display} />
-        </div>
-      </div>
+      <DisplayImage setShowInfo={props.setShowInfo} onCheck={props.onCheck} onDecheck={props.onDecheck} class="aspect0" name={props.build.aspects[0].name} img={props.build.aspects[0].img} display={props.build.aspects[0].display} />
+      <DisplayImage setShowInfo={props.setShowInfo} onCheck={props.onCheck} onDecheck={props.onDecheck} class="aspect1" name={props.build.aspects[1].name} img={props.build.aspects[1].img} display={props.build.aspects[1].display} />
       {/* fragments */}
-      <div class="row">
-        {props.build.fragments.map((item, index) => {
-          return (
-            <div class="column">
-              <DisplayImage onCheck={props.onCheck} onDecheck={props.onDecheck} class={"fragment" + index} name={item.name} img={item.img} display={item.display} />
-            </div>
-          )
-        })}
-      </div>
+      {props.build.fragments.map((item, index) => {
+        return (
+          <DisplayImage setShowInfo={props.setShowInfo} onCheck={props.onCheck} onDecheck={props.onDecheck} class={"fragment" + index} name={item.name} img={item.img} display={item.display} />
+        )
+      })}
+      <DisplayImage setShowInfo={props.setShowInfo} onCheck={props.onCheck} onDecheck={props.onDecheck} class="weapon" name={props.build.weapon.name} img={props.build.weapon.img} display={props.build.weapon.display} />
     </div>
   )
 
@@ -242,9 +245,19 @@ function rerollItem(dclass, dsubclass, oldItem, key) {
       temp.push(item)
     }
   })
-  if(temp.length === 0) {
+  if (temp.length === 0) {
     return oldItem
   }
+
+  let rand = Math.floor(Math.random() * temp.length)
+  return temp[rand]
+}
+
+function rerollWeapon(oldItem, key) {
+  let temp = []
+  data[key].map((item, index) => {
+    temp.push(item)
+  })
 
   let rand = Math.floor(Math.random() * temp.length)
   return temp[rand]
@@ -270,6 +283,10 @@ function rerollAspect(dclass, dsubclass, asp1, asp2, key) {
     }
   })
 
+  if(temp.length === 0) {
+    return asp1
+  }
+
   let rand = Math.floor(Math.random() * temp.length)
   return temp[rand]
 }
@@ -286,9 +303,19 @@ function rerollFragment(dclass, dsubclass, fraglist, key) {
   return temp[rand]
 }
 
+function displayInfo(itemName) {
+  document.getElementById("info-item").innerHTML = itemName
+}
+
+function removeInfo() {
+  document.getElementById("info-item").innerHTML = ""
+}
+
+
 const Game = () => {
 
   const location = useLocation()
+  const navigate = useNavigate();
 
   let subclassChoice = location.state && location.state.subclass
   let classChoice = location.state && location.state.class
@@ -296,8 +323,10 @@ const Game = () => {
   const [currBuild, setBuild] = useState(initBuild(subclassChoice, classChoice))
   const [itemsSel, setItemsSel] = useState(initSelList(currBuild))
 
-  const [rerollPoints, setRerollPoints] = useState(5)
+  const [rerollPoints, setRerollPoints] = useState(15)
   const [numSel, setNumSel] = useState(0)
+
+  const [showInfo, setShowInfo] = useState(false);
 
   const onCheck = e => {
     var usekey = e.target.dataset.key
@@ -355,13 +384,14 @@ const Game = () => {
   }
 
   function rerollSelected() {
-    if(rerollPoints < numSel) {
+    console.log("hello")
+    if (rerollPoints < numSel) {
       document.getElementById("noPoints").innerHTML = "Not enough points remaining"
       return
     }
     document.getElementById("noPoints").innerHTML = ""
     const newCurrBuild = { ...currBuild }
-    const newItemsSel = {...itemsSel}
+    const newItemsSel = { ...itemsSel }
     const entries = Object.entries(newItemsSel)
     for (const [key, value] of entries) {
       if (key === "aspects") {
@@ -370,7 +400,7 @@ const Game = () => {
           newItemsSel.aspects[0] = false
         }
         if (value[1] === true) {
-          newCurrBuild.aspects[1] = rerollAspect(currBuild.class.name, currBuild.subclass.name, currBuild.aspects[0], currBuild.aspects[1], key)
+          newCurrBuild.aspects[1] = rerollAspect(currBuild.class.name, currBuild.subclass.name, currBuild.aspects[1], currBuild.aspects[0], key)
           newItemsSel.aspects[1] = false
         }
 
@@ -397,7 +427,12 @@ const Game = () => {
         if (key === "grenade") {
           newCurrBuild[key] = rerollGrenade(currBuild.class.name, currBuild.subclass.name, currBuild[key], key + "s")
           newItemsSel[key] = false
-        } else {
+        }
+        else if (key === "weapon") {
+          newCurrBuild[key] = rerollWeapon(currBuild[key], key + "s")
+          newItemsSel[key] = false
+        }
+        else {
           if (key === "classabil") {
             newCurrBuild[key] = rerollItem(currBuild.class.name, currBuild.subclass.name, currBuild[key], key)
             newItemsSel[key] = false
@@ -416,24 +451,32 @@ const Game = () => {
     setRerollPoints(rerollPoints - numSel)
     setNumSel(0)
     var checkboxes = document.getElementsByClassName("buildCheckbox")
-    for(var i = 0; i < checkboxes.length; i++) {
+    for (var i = 0; i < checkboxes.length; i++) {
       checkboxes[i].checked = false
     }
 
   }
 
+  const toHome = () => {
+    navigate("/")
+  }
+
   return (
-    <div>
-      <h1>Game Page</h1>
-      <h2>Reroll Points: {rerollPoints}</h2>
-      <h3>Points to be spent: {numSel}</h3>
-      <h3 id="noPoints"></h3>
-      <br></br>
-      <DisplayItems build={currBuild} onCheck={onCheck} onDecheck={onDecheck} />
-
-
-      <button onClick={() => rerollSelected()}>Re-roll</button>
-      <button><Link to="/">Home</Link></button>
+    <div id="main-div">
+      <img class="title-image-game" src={images.title} />
+      <div class="mega-grid-out">
+        <DisplayItems setShowInfo={setShowInfo} build={currBuild} onCheck={onCheck} onDecheck={onDecheck} />
+        <div class="info-page">
+          <h2 id="info-item" class="info-item-name"></h2>
+        </div>
+        <div class="reroll-count-box">
+          <h2 class="reroll-text-1">Reroll Points Remaining: {rerollPoints}</h2>
+          <h3 class="reroll-text-2">Points to be Spent: {numSel}</h3>
+          <h3 id="noPoints" class="no-reroll-text"></h3>
+        </div>
+        <img class="reroll-button" src={images.reroll} onClick={() => rerollSelected()} />
+      </div>
+      <img class="home-butt" src={images.home} onClick={() => toHome()} />
 
     </div>
   );

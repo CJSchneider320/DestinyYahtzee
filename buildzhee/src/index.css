@@ -9,6 +9,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  background: url("https://d13urrra316e2f.cloudfront.net/original/3X/e/6/e62ce0beacde655aeb56b5327917513b129c50df.jpeg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 #root {
@@ -27,14 +32,28 @@ code {
 }
 
 .image {
-  height: 96px;
-  width: 96px;
+  outline: 2px solid #fff;
+  height: 100px;
+  width: 100px;
 }
 
-.login-button {
-  width: 60px;
-  height: 30px;
-  margin: 10px;
+.login-butt {
+  width: 120px;
+  height: 60px;
+  margin: 20px;
+}
+
+.title-image {
+  position: absolute;
+  width: 500px;
+  height: 300px;
+  margin-left: 50%;
+  margin-top: 2%;
+  left: -250px;
+}
+
+.howto-list {
+  color: white;
 }
 
 .main-class {
@@ -74,6 +93,7 @@ code {
   padding: 5px;
   margin: 0 auto;
   letter-spacing: normal;
+  border-radius: 20px;
 }
 
 .class-box-main {
@@ -113,9 +133,50 @@ code {
   grid-row: 1;
   grid-column: 2;
 
-  margin-top: 200px;
+  margin-top: 150px;
   width: 400px;
-  height: 300px;
+  height: 540px;
+}
+
+hr.solid {
+  border-top: 3px solid #fff;
+}
+
+.main-buttons {
+  display: grid;
+  grid-auto-columns: 1fr;
+  row-gap: 15px;
+
+
+}
+
+.weapons-butt,
+.armor-butt {
+  display: inline-block;
+  vertical-align: top;
+  width: 140px;
+  height: 54px;
+
+  padding: 5px;
+  margin: 0 auto;
+
+}
+
+.weapons-butt {
+  grid-row: 1;
+  grid-column: 1;
+}
+
+.armor-butt {
+  grid-row: 1;
+  grid-column: 2;
+}
+
+.play-butt {
+  grid-row: 2;
+  grid-column: 1 / span 2;
+  justify-self: center;
+  align-self: center;
 }
 
 #class-text {
@@ -196,4 +257,239 @@ code {
   opacity: 0;
   width: 0;
   height: 0;
+}
+
+.title-image-game {
+  position: absolute;
+  width: 300px;
+  margin-left: 50%;
+  margin-top: 1%;
+  left: -150px;
+}
+
+.mega-grid-out {
+  padding: 50px;
+  margin: auto;
+  display: grid;
+  position: absolute;
+  top: 15%;
+  grid-template-rows: repeat(12, 50px);
+  grid-template-columns: repeat(36, 50px);
+}
+
+.mega-grid {
+  padding: 50px;
+  margin: auto;
+  display: grid;
+  position: absolute;
+  grid-template-rows: repeat(12, 50px);
+  grid-template-columns: repeat(36, 50px);
+}
+
+.class {
+  width: 200px;
+  height: 200px;
+  grid-row: 1 / 4;
+  grid-column: 29 / 32;
+}
+
+.reroll-button {
+  width: 200px;
+  height: 100px;
+  grid-row: 11 / 13;
+  grid-column: 31 / 34;
+  z-index: 10;
+}
+
+.reroll-text-1 {
+  color: white;
+  font-size: 30px;
+}
+
+.reroll-text-2 {
+  color: white;
+  font-size: 24px;
+}
+
+.no-reroll-text {
+  color: red;
+}
+
+.subclass {
+  width: 200px;
+  height: 200px;
+  grid-row: 1 / 4;
+  grid-column: 33 / 36;
+}
+
+.super {
+  outline: 0px solid #f00;
+  width: 300px;
+  height: 300px;
+}
+
+.super-box {
+  width: 300px;
+  height: 300px;
+  grid-row: 1 / 7;
+  grid-column: 1 / 7;
+  border: 2px solid white;
+  background-color: rgba(255, 255, 255, .2);
+}
+
+.reroll-count-box {
+  border: 2px solid white;
+  background-color: rgba(255, 255, 255, .2);
+  grid-row: 6 / 9;
+  grid-column: 29 / 34;
+  width: 400px;
+  height: 200px;
+  text-align: center;
+  border-radius: 20px;
+
+}
+
+.classabil {
+  grid-row: 2 / 4;
+  grid-column: 9 / 11;
+  z-index: 10;
+}
+
+.melee {
+  grid-row: 2 / 4;
+  grid-column: 12 / 14;
+}
+
+.grenade {
+  grid-row: 2 / 4;
+  grid-column: 15 / 17;
+}
+
+.aspect0 {
+  grid-row: 2 / 4;
+  grid-column: 20 / 22;
+}
+
+.aspect1 {
+  grid-row: 2 / 4;
+  grid-column: 23 / 25;
+}
+
+.fragment0 {
+  grid-row: 6 / 8;
+  grid-column: 9 / 11;
+}
+
+.fragment1 {
+  grid-row: 6 / 8;
+  grid-column: 12 / 14;
+}
+
+.fragment2 {
+  grid-row: 6 / 8;
+  grid-column: 15 / 17;
+}
+
+.fragment3 {
+  grid-row: 6 / 8;
+  grid-column: 18 / 20;
+}
+
+.fragment4 {
+  grid-row: 6 / 8;
+  grid-column: 21 / 23;
+}
+
+.weapon {
+  grid-row: 10 / 12;
+  grid-column: 9 / 11;
+}
+
+.info-page {
+  border: 2px solid white;
+  background-color: rgba(255, 255, 255, .2);
+  grid-row: 10 / 12;
+  grid-column: 1 / 5;
+  width: 350px;
+  height: 150px;
+  text-align: center;
+  border-radius: 20px;
+}
+
+.info-item-name {
+  color: #fff;
+}
+
+.home-butt {
+  width: 120px;
+  height: 60px;
+  margin: 20px;
+}
+
+.mega-weapons-grid {
+  padding: 50px;
+  margin: auto;
+  display: grid;
+  position: absolute;
+  top: 15%;
+  grid-template-columns: auto auto auto;
+  gap: 20px;
+}
+
+.buffer-grid{
+  padding: 50px;
+  margin: auto;
+  display: grid;
+  margin-top: 0px;
+  grid-template-rows: auto auto;
+  gap: 20px;
+}
+
+.buffer-header{
+  color: white;
+  font-size: 36px;
+  text-align: center;
+  -webkit-text-stroke: 1.5px;
+  -webkit-text-stroke-color: black;
+}
+
+.weapons-grid {
+  margin: auto;
+  display: grid;
+  margin-top: 0px;
+  grid-template-columns: repeat(5, 75px);
+  gap: 20px;
+}
+
+.exotic-weapons {
+  border: 2px solid #fff;
+  width: 75px;
+  height: 75px;
+}
+
+.exotic-armor {
+  border: 2px solid #fff;
+  width: 75px;
+  height: 75px;
+}
+
+.exotic-img {
+  width: 75px;
+  height: 75px;
+}
+
+.conf-buttons-grid {
+  margin: auto;
+  display: grid;
+  position: absolute;
+  top: 0.5%;
+  right: 0.5%;
+  gap: 3px;
+  grid-template-rows: auto auto auto;
+}
+
+.conf-butt {
+  width: 225px;
+  height: 75px;
+  z-index: 10;
 }

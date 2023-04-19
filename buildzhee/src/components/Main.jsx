@@ -4,6 +4,7 @@ import images from '../assets';
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
+
 const Main = () => {
 
   const navigate = useNavigate();
@@ -18,6 +19,17 @@ const Main = () => {
     })
   };
 
+  const toWeapons = () => {
+    navigate("/weapons")
+  }
+  const toArmor = () => {
+    navigate("/armor")
+  }
+
+  const toLogin = () => {
+    navigate("/login")
+  }
+
   const onOptionClassChange = e => {
     setClass(e.target.value)
   }
@@ -27,19 +39,9 @@ const Main = () => {
   }
 
   return (
-    <div id="main-div" style={{
-      backgroundImage: `url("https://d13urrra316e2f.cloudfront.net/original/3X/e/6/e62ce0beacde655aeb56b5327917513b129c50df.jpeg")`,
-      backgroundSize: "cover",
-      backgroundPosition: "center"
-    }}>
-      <button class="login-button">
-        <Link to={{ pathname: "/login" }}>
-          <div class="button-img">
-            <img class="button-img login-button" src={images.login} />
-          </div>
-        </Link>
-      </button>
-      <h1 class="title">Main Page</h1>
+    <div id="main-div">
+      <img class="login-butt" src={images.login} onClick={() => toLogin()}/>
+      <img class="title-image" src={images.title} />
       <br></br>
       <div class="main-page">
         <div class="class-box-main column-main">
@@ -80,9 +82,25 @@ const Main = () => {
 
         <div class="center-box column-main">
           <div class="row">
-            <button> <Link to={{ pathname: "/weapons" }}><img class="button-img" src={images.weapons} /></Link></button>
-            <button> <Link to={{ pathname: "/armor" }}> <img class="button-img" src={images.armor} /></Link></button>
-            <button onClick={() => changePage(classChoice, subclassChoice)}><img class="button-img" src={images.play} /></button>
+            <hr class="solid"></hr>
+            <ul>
+              <li class="howto-list">Welcome to Buildzhee! Select a class and subclass to begin playing, or select "None" to choose a random one! You will not be able to change your class and subclass after this.</li>
+            </ul>
+            <hr class="solid"></hr>
+            <ul>
+              <li class="howto-list">You will have 15 reroll points, which can be spent to reroll your super, grenade, melee, class ability, aspects, fragments, and exotics. Once all 15 are spent, the result is your build!</li>
+            </ul>
+            <hr class="solid"></hr>
+            <ul>
+              <li class="howto-list">Select "Weapons" or "Armor" to change your acquired exotic lists, and select "Play" to begin!</li>
+            </ul>
+            <hr class="solid"></hr>
+
+            <div class="main-buttons">
+              <img class="weapons-butt" src={images.weapons} onClick={() => toWeapons()}/>
+              <img class="armor-butt" src={images.armor} onClick={() => toArmor()}/>
+              <img onClick={() => changePage(classChoice, subclassChoice)} class="play-butt" src={images.play} />
+            </div>
           </div>
         </div>
 
