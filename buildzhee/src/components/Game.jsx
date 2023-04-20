@@ -70,6 +70,9 @@ function initBuild(subclassChoice, classChoice) {
   //choose weapon
   ret.weapon = initWeapon()
 
+  //choose armor
+  ret.armor = initArmor(classChoice.name, subclassChoice.name)
+
   return ret
 }
 
@@ -90,7 +93,8 @@ function initSelList(currBuild) {
     classabil: false,
     aspects: [false, false],
     fragments: temp,
-    weapon: false
+    weapon: false,
+    armor: false
   }
 
 }
@@ -113,6 +117,21 @@ function initWeapon() {
   })
 
   var rand = Math.floor(Math.random() * possItems.length)
+  return possItems[rand]
+}
+
+function initArmor(classChoice, subclassChoice) {
+  let possItems = []
+  data.armors.map((item, index) => {
+    if (item.class == classChoice && item.subclass.includes(subclassChoice)) {
+      possItems.push(item)
+    }
+  })
+
+  var rand = Math.floor(Math.random() * possItems.length)
+  if(possItems.length == 0) {
+    return "hello"
+  }
   return possItems[rand]
 }
 
@@ -233,6 +252,7 @@ function DisplayItems(props) {
         )
       })}
       <DisplayImage setShowInfo={props.setShowInfo} onCheck={props.onCheck} onDecheck={props.onDecheck} class="weapon" name={props.build.weapon.name} img={props.build.weapon.img} display={props.build.weapon.display} />
+      <DisplayImage setShowInfo={props.setShowInfo} onCheck={props.onCheck} onDecheck={props.onDecheck} class="armor" name={props.build.armor.name} img={props.build.armor.img} display={props.build.armor.display} />
     </div>
   )
 
@@ -263,6 +283,18 @@ function rerollWeapon(oldItem, key) {
   return temp[rand]
 }
 
+function rerollArmor(dclass, dsubclass, oldItem, key) {
+  let possItems = []
+  data[key].map((item, index) => {
+    if (item.class == dclass && (item.subclass.includes(dsubclass) || item.subclass.includes("all"))) {
+      possItems.push(item)
+    }
+  })
+
+  var rand = Math.floor(Math.random() * possItems.length)
+  return possItems[rand]
+}
+
 function rerollGrenade(dclass, dsubclass, oldItem, key) {
   let temp = []
   data[key].map((item, index) => {
@@ -283,7 +315,7 @@ function rerollAspect(dclass, dsubclass, asp1, asp2, key) {
     }
   })
 
-  if(temp.length === 0) {
+  if (temp.length === 0) {
     return asp1
   }
 
@@ -321,6 +353,7 @@ const Game = () => {
   let classChoice = location.state && location.state.class
 
   const [currBuild, setBuild] = useState(initBuild(subclassChoice, classChoice))
+  console.log(currBuild)
   const [itemsSel, setItemsSel] = useState(initSelList(currBuild))
 
   const [rerollPoints, setRerollPoints] = useState(15)
@@ -430,6 +463,10 @@ const Game = () => {
         }
         else if (key === "weapon") {
           newCurrBuild[key] = rerollWeapon(currBuild[key], key + "s")
+          newItemsSel[key] = false
+        }
+        else if (key === "armor") {
+          newCurrBuild[key] = rerollArmor(currBuild.class.name, currBuild.subclass.name, currBuild[key], key + "s")
           newItemsSel[key] = false
         }
         else {
