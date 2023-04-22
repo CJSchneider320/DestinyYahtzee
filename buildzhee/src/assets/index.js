@@ -9,6 +9,7 @@ import play from '../assets/Style/play_button.png'
 import reroll from '../assets/Style/reroll_button.png'
 import home from '../assets/Style/home_button.png'
 import title from '../assets/Style/title_image.png'
+import register from '../assets/Style/register_butt.png'
 
 import selall from '../assets/Style/selall_button.png'
 import deselall from '../assets/Style/deselall_img.png'
@@ -628,6 +629,8 @@ const images = {
     selall,
     deselall,
     confirm,
+
+    register,
 
     //subclasses
     arc,

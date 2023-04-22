@@ -2,7 +2,12 @@ import React from "react";
 import images from '../assets';
 
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { getDatabase, ref, get, onValue } from "firebase/database";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { db } from "./firebaseConfig"
 
 
 const Main = () => {
@@ -11,19 +16,26 @@ const Main = () => {
   const [classChoice, setClass] = useState("random")
   const [subclassChoice, setSubclass] = useState("random")
 
+  const [userId, setUserId] = useState(location.search.split("=")[1])
+
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+
+  console.log(userId)
 
   const changePage = (classChoice, subclassChoice) => {
     console.log(classChoice + " " + subclassChoice)
-    navigate("/game", {
+    navigate(`/game?uid=${user.uid}`, {
       state: { subclass: subclassChoice, class: classChoice },
     })
   };
 
   const toWeapons = () => {
-    navigate("/weapons")
+    navigate(`/weapons?uid=${user.uid}`)
   }
   const toArmor = () => {
-    navigate("/armor")
+    navigate(`/armor?uid=${user.uid}`)
   }
 
   const toLogin = () => {
@@ -40,8 +52,9 @@ const Main = () => {
 
   return (
     <div id="main-div">
-      <img class="login-butt" src={images.login} onClick={() => toLogin()}/>
+      <img class="login-butt" src={images.login} onClick={() => toLogin()} />
       <img class="title-image" src={images.title} />
+      <h1></h1>
       <br></br>
       <div class="main-page">
         <div class="class-box-main column-main">
@@ -92,13 +105,13 @@ const Main = () => {
             </ul>
             <hr class="solid"></hr>
             <ul>
-              <li class="howto-list">Select "Weapons" or "Armor" to change your acquired exotic lists, and select "Play" to begin!</li>
+              <li class="howto-list">Log in to select your acquired Exotic Weapons and Armor. Press "Play" to play as a guest.</li>
             </ul>
             <hr class="solid"></hr>
 
             <div class="main-buttons">
-              <img class="weapons-butt" src={images.weapons} onClick={() => toWeapons()}/>
-              <img class="armor-butt" src={images.armor} onClick={() => toArmor()}/>
+              <img class="weapons-butt" src={images.weapons} onClick={() => toWeapons()} />
+              <img class="armor-butt" src={images.armor} onClick={() => toArmor()} />
               <img onClick={() => changePage(classChoice, subclassChoice)} class="play-butt" src={images.play} />
             </div>
           </div>

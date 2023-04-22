@@ -2,10 +2,15 @@ import React from "react";
 import images from '../assets';
 import data from "./data"
 
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { getDatabase, ref, get, onValue } from "firebase/database";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { db } from "./firebaseConfig"
 
-function initBuild(subclassChoice, classChoice) {
+function initBuild(subclassChoice, classChoice, weapList) {
 
   if (subclassChoice === "random") {
     var rand = Math.floor(Math.random() * 5)
@@ -68,7 +73,7 @@ function initBuild(subclassChoice, classChoice) {
   ret.fragments = initFragments(subclassChoice.name, numFrag)
 
   //choose weapon
-  ret.weapon = initWeapon()
+  ret.weapon = initWeapon(weapList)
 
   //choose armor
   ret.armor = initArmor(classChoice.name, subclassChoice.name)
@@ -110,10 +115,11 @@ function initItem(classChoice, subclassChoice, dataSec) {
   return possItems[rand]
 }
 
-function initWeapon() {
+function initWeapon(weapList) {
   let possItems = []
   data.weapons.map((item, index) => {
-    possItems.push(item)
+    if (weapList.includes(item))
+      possItems.push(item)
   })
 
   var rand = Math.floor(Math.random() * possItems.length)
@@ -129,7 +135,7 @@ function initArmor(classChoice, subclassChoice) {
   })
 
   var rand = Math.floor(Math.random() * possItems.length)
-  if(possItems.length == 0) {
+  if (possItems.length == 0) {
     return "hello"
   }
   return possItems[rand]
@@ -343,6 +349,17 @@ function removeInfo() {
   document.getElementById("info-item").innerHTML = ""
 }
 
+async function initWeapList(userId) {
+  const docRef = doc(db, "users", userId);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return (docSnap.data().weapons);
+  } else {
+    // docSnap.data() will be undefined in this case
+    console.log("No such document!");
+  }
+}
 
 const Game = () => {
 
@@ -352,7 +369,31 @@ const Game = () => {
   let subclassChoice = location.state && location.state.subclass
   let classChoice = location.state && location.state.class
 
-  const [currBuild, setBuild] = useState(initBuild(subclassChoice, classChoice))
+  const [userId, setUserId] = useState(location.search.split("=")[1])
+
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  const [weapList, setWeapList] = useState()
+
+  useEffect(() => {
+    const fetchWeapList = async () => {
+      const list = await initWeapList(userId);
+      setWeapList(list);
+    };
+    fetchWeapList();
+  }, []);
+
+  console.log(weapList)
+
+  const [armorList, setArmorList] = useState()
+
+  const [currBuild, setBuild] = useState()
+  useEffect(() => {
+    if (weapList) {
+      setBuild(initBuild(subclassChoice, classChoice, weapList))
+    }
+  }, [subclassChoice, classChoice, weapList])
   console.log(currBuild)
   const [itemsSel, setItemsSel] = useState(initSelList(currBuild))
 
@@ -495,7 +536,7 @@ const Game = () => {
   }
 
   const toHome = () => {
-    navigate("/")
+    navigate(`/?uid=${user.uid}`)
   }
 
   return (

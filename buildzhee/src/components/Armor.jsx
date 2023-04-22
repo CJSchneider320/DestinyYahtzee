@@ -2,8 +2,13 @@ import React from "react";
 import images from '../assets';
 import data from "./data"
 
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { getFirestore, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { getDatabase, ref, get, onValue, up } from "firebase/database";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { db } from "./firebaseConfig"
 
 function DisplayImage(props) {
   return (
@@ -60,8 +65,43 @@ const Armor = () => {
   const [hunterArmor, setHunterArmor] = useState(initList("hunter"))
   const [warlockArmor, setWarlockArmor] = useState(initList("warlock"))
 
+  const [userId, setUserId] = useState(location.search.split("=")[1])
+
+  const auth = getAuth();
+  const user = auth.currentUser;
+
   const toHome = () => {
-    navigate("/")
+    navigate(`/?uid=${user.uid}`)
+  }
+
+  function getCheckedBoxes() {
+    const checkboxes = document.getElementsByClassName("armorCheckbox");
+    const checkedBoxes = [];
+
+    for (let i = 0; i < checkboxes.length; i++) {
+      if (checkboxes[i].checked) {
+        checkedBoxes.push(checkboxes[i].name);
+      }
+    }
+
+    console.log(checkedBoxes)
+
+    if (!user) {
+      console.error("No user is currently signed in.");
+      return;
+    }
+
+    const userDocRef = doc(db, "users", user.uid);
+    updateDoc(userDocRef, { armor: checkedBoxes })
+      .then(() => {
+        console.log("Document updated successfully!");
+        setTimeout(() => {
+          navigate(`/?uid=${user.uid}`);
+        }, 200);
+      })
+      .catch((error) => {
+        console.error("Error updating document: ", error);
+      });
   }
 
   return (
@@ -70,7 +110,7 @@ const Armor = () => {
       <div class="conf-buttons-grid">
         <img class="conf-butt" src={images.selall} onClick={() => selectAll()} />
         <img class="conf-butt" src={images.deselall} onClick={() => deselectAll()} />
-        <img class="conf-butt" src={images.confirm} />
+        <img class="conf-butt" src={images.confirm} onClick={() => getCheckedBoxes()} />
       </div>
       <div class="mega-weapons-grid">
         <div class="buffer-grid">
