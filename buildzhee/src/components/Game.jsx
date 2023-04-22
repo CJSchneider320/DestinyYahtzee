@@ -10,7 +10,7 @@ import { getDatabase, ref, get, onValue } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { db } from "./firebaseConfig"
 
-function initBuild(subclassChoice, classChoice, weapList) {
+function initBuild(subclassChoice, classChoice, weapList, armorList) {
 
   if (subclassChoice === "random") {
     var rand = Math.floor(Math.random() * 5)
@@ -76,7 +76,7 @@ function initBuild(subclassChoice, classChoice, weapList) {
   ret.weapon = initWeapon(weapList)
 
   //choose armor
-  ret.armor = initArmor(classChoice.name, subclassChoice.name)
+  ret.armor = initArmor(classChoice.name, subclassChoice.name, armorList)
 
   return ret
 }
@@ -118,7 +118,7 @@ function initItem(classChoice, subclassChoice, dataSec) {
 function initWeapon(weapList) {
   let possItems = []
   data.weapons.map((item, index) => {
-    if (weapList.includes(item))
+    if (weapList.includes(item.name))
       possItems.push(item)
   })
 
@@ -126,10 +126,10 @@ function initWeapon(weapList) {
   return possItems[rand]
 }
 
-function initArmor(classChoice, subclassChoice) {
+function initArmor(classChoice, subclassChoice, armorList) {
   let possItems = []
   data.armors.map((item, index) => {
-    if (item.class == classChoice && item.subclass.includes(subclassChoice)) {
+    if (item.class == classChoice && item.subclass.includes(subclassChoice) && armorList.includes(item.name)) {
       possItems.push(item)
     }
   })
@@ -279,23 +279,31 @@ function rerollItem(dclass, dsubclass, oldItem, key) {
   return temp[rand]
 }
 
-function rerollWeapon(oldItem, key) {
+function rerollWeapon(oldItem, key, weapList) {
   let temp = []
   data[key].map((item, index) => {
-    temp.push(item)
+    if (weapList.includes(item.name) && item != oldItem)
+      temp.push(item)
   })
+
+  if(temp.length === 0) {
+    return oldItem
+  }
 
   let rand = Math.floor(Math.random() * temp.length)
   return temp[rand]
 }
 
-function rerollArmor(dclass, dsubclass, oldItem, key) {
+function rerollArmor(dclass, dsubclass, oldItem, key, armorList) {
   let possItems = []
   data[key].map((item, index) => {
-    if (item.class == dclass && (item.subclass.includes(dsubclass) || item.subclass.includes("all"))) {
+    if (item.class == dclass && (item.subclass.includes(dsubclass) || item.subclass.includes("all")) && armorList.includes(item.name) && item != oldItem) {
       possItems.push(item)
     }
   })
+  if(possItems.length === 0) {
+    return oldItem
+  }
 
   var rand = Math.floor(Math.random() * possItems.length)
   return possItems[rand]
@@ -349,17 +357,6 @@ function removeInfo() {
   document.getElementById("info-item").innerHTML = ""
 }
 
-async function initWeapList(userId) {
-  const docRef = doc(db, "users", userId);
-  const docSnap = await getDoc(docRef);
-
-  if (docSnap.exists()) {
-    return (docSnap.data().weapons);
-  } else {
-    // docSnap.data() will be undefined in this case
-    console.log("No such document!");
-  }
-}
 
 const Game = () => {
 
@@ -368,32 +365,13 @@ const Game = () => {
 
   let subclassChoice = location.state && location.state.subclass
   let classChoice = location.state && location.state.class
-
-  const [userId, setUserId] = useState(location.search.split("=")[1])
-
-  const auth = getAuth();
-  const user = auth.currentUser;
-
-  const [weapList, setWeapList] = useState()
-
-  useEffect(() => {
-    const fetchWeapList = async () => {
-      const list = await initWeapList(userId);
-      setWeapList(list);
-    };
-    fetchWeapList();
-  }, []);
+  let weapList = location.state && location.state.weapons
+  let armorList = location.state && location.state.armor
 
   console.log(weapList)
+  console.log(armorList)
 
-  const [armorList, setArmorList] = useState()
-
-  const [currBuild, setBuild] = useState()
-  useEffect(() => {
-    if (weapList) {
-      setBuild(initBuild(subclassChoice, classChoice, weapList))
-    }
-  }, [subclassChoice, classChoice, weapList])
+  const [currBuild, setBuild] = useState(initBuild(subclassChoice, classChoice, weapList, armorList))
   console.log(currBuild)
   const [itemsSel, setItemsSel] = useState(initSelList(currBuild))
 
@@ -401,6 +379,11 @@ const Game = () => {
   const [numSel, setNumSel] = useState(0)
 
   const [showInfo, setShowInfo] = useState(false);
+
+  const [userId, setUserId] = useState(location.search.split("=")[1])
+
+  const auth = getAuth();
+  const user = auth.currentUser;
 
   const onCheck = e => {
     var usekey = e.target.dataset.key
@@ -503,11 +486,11 @@ const Game = () => {
           newItemsSel[key] = false
         }
         else if (key === "weapon") {
-          newCurrBuild[key] = rerollWeapon(currBuild[key], key + "s")
+          newCurrBuild[key] = rerollWeapon(currBuild[key], key + "s", weapList)
           newItemsSel[key] = false
         }
         else if (key === "armor") {
-          newCurrBuild[key] = rerollArmor(currBuild.class.name, currBuild.subclass.name, currBuild[key], key + "s")
+          newCurrBuild[key] = rerollArmor(currBuild.class.name, currBuild.subclass.name, currBuild[key], key + "s", armorList)
           newItemsSel[key] = false
         }
         else {

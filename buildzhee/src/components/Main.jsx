@@ -18,16 +18,48 @@ const Main = () => {
 
   const [userId, setUserId] = useState(location.search.split("=")[1])
 
+  const dbwl = async () => {
+    const docRef = doc(db, "users", userId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      setWeapList(docSnap.data().weapons);
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log("No such document!");
+    }
+  }
+
+  const [weapList, setWeapList] = useState(dbwl)
+
+  console.log(weapList)
+
+  const dbal = async () => {
+    const docRef = doc(db, "users", userId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      setArmorList(docSnap.data().armor);
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log("No such document!");
+    }
+  }
+
+  const [armorList, setArmorList] = useState(dbal)
+
+  console.log(armorList)
+
+
   const auth = getAuth();
   const user = auth.currentUser;
 
 
   console.log(userId)
 
-  const changePage = (classChoice, subclassChoice) => {
-    console.log(classChoice + " " + subclassChoice)
+  const changePage = async (classChoice, subclassChoice) => {
     navigate(`/game?uid=${user.uid}`, {
-      state: { subclass: subclassChoice, class: classChoice },
+      state: { subclass: subclassChoice, class: classChoice, weapons: weapList, armor: armorList},
     })
   };
 
