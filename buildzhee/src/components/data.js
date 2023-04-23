@@ -439,7 +439,7 @@ const data = {
     { name: "athryss_embrace", display: "Athrys's Embrace", class: "hunter", subclass: ["solar"], type: "Gauntlets", img: images.athryss_embrace },
     { name: "blight_ranger", display: "Blight Ranger", class: "hunter", subclass: ["arc"], type: "Helmet", img: images.blight_ranger },
     { name: "calibans_hand", display: "Caliban's Hand", class: "hunter", subclass: ["solar"], type: "Gauntlets", img: images.calibans_hand },
-    { name: "celestial_nighthawk", display: "Fr0st-EE5", class: "hunter", subclass: ["solar"], type: "Helmet", img: images.celestial_nighthawk },
+    { name: "celestial_nighthawk", display: "Celestial Nighthawk", class: "hunter", subclass: ["solar"], type: "Helmet", img: images.celestial_nighthawk },
     { name: "cyrtarachnes_facade", display: "Cyrtarachne's Facade", class: "hunter", subclass: ["strand"], type: "Helmet", img: images.cyrtarachnes_facade },
     { name: "foetracer", display: "Foetracer", class: "hunter", subclass: ["void", "solar", "arc", "stasis", "strand"], type: "Helmet", img: images.foetracer },
     { name: "fr0st_ee5", display: "Fr0st-EE5", class: "hunter", subclass: ["void", "solar", "arc", "stasis", "strand"], type: "Boots", img: images.fr0st_ee5 },
