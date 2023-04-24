@@ -43,6 +43,15 @@ code {
   margin: 20px;
 }
 
+.logout-butt {
+  width: 120px;
+  height: 60px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  
+}
+
 .title-image {
   position: absolute;
   width: 500px;
@@ -562,4 +571,17 @@ hr.solid {
   margin-right: auto;
   margin-top: 15%;
 
+}
+
+.sign-in-info {
+  color: white;
+  position: absolute;
+  top: 15px;
+  margin-left: 170px;
+
+}
+
+.auth-errors { 
+  color: red;
+  text-align: center;
 }

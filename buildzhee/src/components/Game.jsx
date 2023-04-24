@@ -286,7 +286,7 @@ function rerollWeapon(oldItem, key, weapList) {
       temp.push(item)
   })
 
-  if(temp.length === 0) {
+  if (temp.length === 0) {
     return oldItem
   }
 
@@ -301,7 +301,7 @@ function rerollArmor(dclass, dsubclass, oldItem, key, armorList) {
       possItems.push(item)
     }
   })
-  if(possItems.length === 0) {
+  if (possItems.length === 0) {
     return oldItem
   }
 
@@ -519,7 +519,10 @@ const Game = () => {
   }
 
   const toHome = () => {
-    navigate(`/?uid=${user.uid}`)
+    if (user)
+      navigate(`/?uid=${user.uid}`)
+    else
+    navigate(`/`)
   }
 
   return (

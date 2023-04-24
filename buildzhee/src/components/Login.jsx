@@ -21,8 +21,22 @@ const firebaseConfig = {
   measurementId: "G-VT9B73LZMC"
 };
 
-function retUser() {
+function allWeapons() {
+  var allWeaps = []
+  data.weapons.map((item, index) => {
+    allWeaps.push(item.name)
+  })
 
+  return allWeaps
+}
+
+function allArmor() {
+  var allArm = []
+  data.armors.map((item, index) => {
+    allArm.push(item.name)
+  })
+
+  return allArm
 }
 
 const Login = () => {
@@ -49,7 +63,7 @@ const Login = () => {
       );
       navigate(`/?uid=${userCredential.user.uid}`);
     } catch (error) {
-      console.log(error)
+      document.getElementById("login-error").innerHTML = error.message
     }
   }
 
@@ -68,8 +82,8 @@ const Login = () => {
       const userDocRef = doc(db, "users", userCredential.user.uid);
       const userData = {
         email: email,
-        weapons: [],
-        armor: []
+        weapons: allWeapons(),
+        armor: allArmor()
         // add any other information you want to store for the user
       };
       setDoc(userDocRef, userData)
@@ -83,7 +97,7 @@ const Login = () => {
       // Redirect the user to a different page with their information
       navigate(`/?uid=${userCredential.user.uid}`);
     } catch (error) {
-      console.log(error)
+      document.getElementById("register-error").innerHTML = error.message
     }
   }
 
@@ -102,7 +116,9 @@ const Login = () => {
             <label class="login-label" for="supassword">Password:</label>
             <br />
             <input class="login-input" type="text" name="supassword" required /><br />
+            <h2 id="login-error" class="auth-errors"></h2>
             <input type="image" name="submit" class="conf-login" src={images.login} onSubmit={(e) => { retUser() }}></input>
+
           </form>
         </div>
         <div class="login-box">
@@ -115,7 +131,9 @@ const Login = () => {
             <label class="login-label" for="lipassword">Password:</label>
             <br />
             <input class="login-input" type="text" name="lipassword" /><br />
+            <h2 id="register-error" class="auth-errors"></h2>
             <input type="image" name="submit" class="conf-login" src={images.register} onSubmit={(e) => newUser()}></input>
+
           </form>
         </div>
       </div>

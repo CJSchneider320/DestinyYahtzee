@@ -10,6 +10,7 @@ import reroll from '../assets/Style/reroll_button.png'
 import home from '../assets/Style/home_button.png'
 import title from '../assets/Style/title_image.png'
 import register from '../assets/Style/register_butt.png'
+import logout from '../assets/Style/logout_button.png'
 
 import selall from '../assets/Style/selall_button.png'
 import deselall from '../assets/Style/deselall_img.png'
@@ -625,6 +626,7 @@ const images = {
     reroll,
     home,
     title,
+    logout,
 
     selall,
     deselall,

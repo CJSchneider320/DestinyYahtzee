@@ -1,77 +1,126 @@
 import React from "react";
 import images from '../assets';
+import data from "./data"
 
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 import { getDatabase, ref, get, onValue } from "firebase/database";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { db } from "./firebaseConfig"
 
+
+function allWeapons() {
+  var allWeaps = []
+  data.weapons.map((item, index) => {
+    allWeaps.push(item.name)
+  })
+
+  return allWeaps
+}
+
+function allArmor() {
+  var allArm = []
+  data.armors.map((item, index) => {
+    allArm.push(item.name)
+  })
+
+  return allArm
+}
 
 const Main = () => {
 
   const navigate = useNavigate();
+  var isLogged;
   const [classChoice, setClass] = useState("random")
   const [subclassChoice, setSubclass] = useState("random")
+  const [weapList, setWeapList] = useState(allWeapons)
+  const [armorList, setArmorList] = useState(allArmor)
 
   const [userId, setUserId] = useState(location.search.split("=")[1])
-
-  const dbwl = async () => {
-    const docRef = doc(db, "users", userId);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      setWeapList(docSnap.data().weapons);
-    } else {
-      // docSnap.data() will be undefined in this case
-      console.log("No such document!");
-    }
-  }
-
-  const [weapList, setWeapList] = useState(dbwl)
-
-  console.log(weapList)
-
-  const dbal = async () => {
-    const docRef = doc(db, "users", userId);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      setArmorList(docSnap.data().armor);
-    } else {
-      // docSnap.data() will be undefined in this case
-      console.log("No such document!");
-    }
-  }
-
-  const [armorList, setArmorList] = useState(dbal)
-
-  console.log(armorList)
-
+  
 
   const auth = getAuth();
   const user = auth.currentUser;
+  console.log(userId);
 
+  if (user) {
+    isLogged = `Signed in: ` + user.email;
+  } else {
+    isLogged = "Not signed in";
+  }
 
-  console.log(userId)
+  useEffect(() => {
+    const dbwl = async () => {
+      const docRef = doc(db, "users", userId);
+      const docSnap = await getDoc(docRef);
+  
+      if (docSnap.exists()) {
+        setWeapList(docSnap.data().weapons);
+      } else {
+        // docSnap.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    };
+  
+    const dbal = async () => {
+      const docRef = doc(db, "users", userId);
+      const docSnap = await getDoc(docRef);
+  
+      if (docSnap.exists()) {
+        setArmorList(docSnap.data().armor);
+      } else {
+        // docSnap.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    };
+  
+    if (user) {
+      dbwl();
+      dbal();
+    }
+  }, [userId]);
 
   const changePage = async (classChoice, subclassChoice) => {
-    navigate(`/game?uid=${user.uid}`, {
-      state: { subclass: subclassChoice, class: classChoice, weapons: weapList, armor: armorList},
-    })
+    if (user) {
+      navigate(`/game?uid=${user.uid}`, {
+        state: { subclass: subclassChoice, class: classChoice, weapons: weapList, armor: armorList },
+      })
+    }
+    else {
+      navigate(`/game`, {
+        state: { subclass: subclassChoice, class: classChoice, weapons: weapList, armor: armorList },
+      })
+    }
   };
 
   const toWeapons = () => {
-    navigate(`/weapons?uid=${user.uid}`)
+    if (user)
+      navigate(`/weapons?uid=${user.uid}`)
+    else
+      document.getElementById("sign-in-info").innerHTML = "Cannot access Weapons page: Not signed in"
   }
   const toArmor = () => {
-    navigate(`/armor?uid=${user.uid}`)
+    if (user)
+      navigate(`/armor?uid=${user.uid}`)
+    else
+      document.getElementById("sign-in-info").innerHTML = "Cannot access Armor page: Not signed in"
   }
 
   const toLogin = () => {
     navigate("/login")
+  }
+
+  const logOut = async () => {
+    signOut(auth).then(() => {
+      document.getElementById("sign-in-info").innerHTML = "Not signed in"
+      setWeapList(allWeapons)
+      setArmorList(allArmor)
+
+    }).catch((error) => {
+      console.log(error)
+    });
   }
 
   const onOptionClassChange = e => {
@@ -82,10 +131,14 @@ const Main = () => {
     setSubclass(e.target.value)
   }
 
+  console.log("hello")
+
   return (
     <div id="main-div">
       <img class="login-butt" src={images.login} onClick={() => toLogin()} />
+      <h2 id="sign-in-info" class="sign-in-info">{isLogged}</h2>
       <img class="title-image" src={images.title} />
+      <img class="logout-butt" src={images.logout} onClick={() => logOut()} />
       <h1></h1>
       <br></br>
       <div class="main-page">
