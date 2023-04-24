@@ -56,6 +56,7 @@ function initList(currSlot) {
 const Weapons = () => {
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [weapList, setWeapList] = useState(data.weapons);
   const [kinWeapList, setKinWeapList] = useState(initList("Kinetic"));
