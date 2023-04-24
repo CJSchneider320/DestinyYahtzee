@@ -32,6 +32,7 @@ function allArmor() {
 const Main = () => {
 
   const navigate = useNavigate();
+  const location = useLocation();
   var isLogged;
   const [classChoice, setClass] = useState("random")
   const [subclassChoice, setSubclass] = useState("random")

@@ -58,6 +58,7 @@ function initList(currClass) {
 const Armor = () => {
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [armorList, setArmorList] = useState(data.armors);
 
