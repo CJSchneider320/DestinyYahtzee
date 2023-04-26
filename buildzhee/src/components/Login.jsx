@@ -115,7 +115,7 @@ const Login = () => {
             <br />
             <label class="login-label" for="supassword">Password:</label>
             <br />
-            <input class="login-input" type="text" name="supassword" required /><br />
+            <input class="login-input" type="password" name="supassword" required /><br />
             <h2 id="login-error" class="auth-errors"></h2>
             <input type="image" name="submit" class="conf-login" src={images.login} onSubmit={(e) => { retUser() }}></input>
 
@@ -130,7 +130,7 @@ const Login = () => {
             <br />
             <label class="login-label" for="lipassword">Password:</label>
             <br />
-            <input class="login-input" type="text" name="lipassword" /><br />
+            <input class="login-input" type="password" name="lipassword" /><br />
             <h2 id="register-error" class="auth-errors"></h2>
             <input type="image" name="submit" class="conf-login" src={images.register} onSubmit={(e) => newUser()}></input>
 
