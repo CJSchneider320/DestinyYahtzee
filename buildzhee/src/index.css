@@ -9,7 +9,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background: url("https://d13urrra316e2f.cloudfront.net/original/3X/e/6/e62ce0beacde655aeb56b5327917513b129c50df.jpeg") no-repeat center center fixed;
+  background: url("./assets/background.jpg") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
